@@ -21,7 +21,7 @@ def test_episode(
     """A simple wrapper of testing policy in collector."""
     collector.reset_env()
     collector.reset_buffer()
-    policy.eval()
+    policy.set_train(False)
     if test_fn:
         test_fn(epoch, global_step)
     result = collector.collect(n_episode=n_episode)

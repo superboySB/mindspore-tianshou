@@ -13,7 +13,7 @@
     cd mindrl
     ```
    
-2. Create Virtual Environment
+2. [Optional] Create Virtual Environment
     ```
    conda create -n mindrl python==3.7
    conda activate mindrl
@@ -32,16 +32,17 @@
     ```
 4. [Optional] If you want to install all of RL environments for developing, run:
 	```sh
-	xxxxx# 安装GPU版本的mindspore
+	# 暂时不安装GPU版本的mindspore
 	pip install -e .[dev]
 	```
 
 
 ## :computer: Training
 
-Get the usage information of the project
+Test all algorithms in Tianshou
 ```bash
-cd mcs
+python test/discrete/test_dqn.py
+
 python train.py -h
 ```
 Then the usage information will be shown as following, more configuration can be found in the default config file [config/default.json](https://github.com/BIT-MCS/DRL-DisasterVC/mcs/config/default.json).

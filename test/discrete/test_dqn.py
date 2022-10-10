@@ -51,7 +51,7 @@ def get_args():
     return args
 
 
-def test_dqn(args=get_args()):
+def test_dqn(args = get_args()):
     ms.set_context(device_target=args.device)
     ms.set_context(mode=ms.PYNATIVE_MODE)
     if ms.get_context('device_target') in ['CPU']:
@@ -88,7 +88,9 @@ def test_dqn(args=get_args()):
         device=args.device,
         # dueling=(Q_param, V_param),
     )
-    optim = nn.Adam(net.trainable_params(), learning_rate=args.lr)
+    # optim = nn.Adam(net.trainable_params(), learning_rate=args.lr)
+    optim= None
+
     policy = DQNPolicy(
         net,
         optim,
@@ -117,7 +119,7 @@ def test_dqn(args=get_args()):
     logger = TensorboardLogger(writer)
 
     def save_best_fn(policy):
-        torch.save(policy.state_dict(), os.path.join(log_path, 'policy.pth'))
+        ms.save_checkpoint(policy, os.path.join(log_path, 'policy.ckpt'))
 
     def stop_fn(mean_rewards):
         return mean_rewards >= args.reward_threshold
@@ -153,13 +155,14 @@ def test_dqn(args=get_args()):
         save_best_fn=save_best_fn,
         logger=logger,
     )
-    assert stop_fn(result['best_reward'])
+    print(f'Finished training! Use {result["duration"]}')
+    ms.save_checkpoint(policy, 'dqn.ckpt')
 
     if __name__ == '__main__':
         pprint.pprint(result)
         # Let's watch its performance!
         env = gym.make(args.task)
-        policy.eval()
+        policy.train(mode=False)
         policy.set_eps(args.eps_test)
         collector = Collector(policy, env)
         result = collector.collect(n_episode=1, render=args.render)
@@ -167,7 +170,36 @@ def test_dqn(args=get_args()):
         print(f"Final reward: {rews.mean()}, length: {lens.mean()}")
 
 
-def test_pdqn(args=get_args()):
+def test_dqn_evaluate(args = get_args()):
+    env = gym.make(args.task)
+
+    net = Net(
+        args.state_shape,
+        args.action_shape,
+        hidden_sizes=args.hidden_sizes,
+        device=args.device,
+        # dueling=(Q_param, V_param),
+    )
+    optim = nn.Adam(net.trainable_params(), learning_rate=args.lr)
+    policy = DQNPolicy(
+        net,
+        optim,
+        args.gamma,
+        args.n_step,
+        target_update_freq=args.target_update_freq,
+    )
+    param_not_load = ms.load_param_into_net(policy, ms.load_checkpoint('dqn.ckpt'))
+    print(f"param_not_load:{param_not_load}")
+    policy.train(mode=False)
+    policy.set_eps(args.eps_test)
+
+    collector = Collector(policy, env)
+    result = collector.collect(n_episode=1, render=1 / 35)
+    rews, lens = result["rews"], result["lens"]
+    print(f"Final reward: {rews.mean()}, length: {lens.mean()}")
+
+
+def test_pdqn(args = get_args()):
     args.prioritized_replay = True
     args.gamma = .95
     args.seed = 1
@@ -175,4 +207,4 @@ def test_pdqn(args=get_args()):
 
 
 if __name__ == '__main__':
-    test_dqn(get_args())
+    test_dqn()

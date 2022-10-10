@@ -1,7 +1,7 @@
 from typing import Any, List, Optional, Tuple, Union
 
 import numpy as np
-import torch
+import mindspore as ms
 
 from mindrl.data import Batch, ReplayBuffer, SegmentTree, to_numpy
 
@@ -76,7 +76,7 @@ class PrioritizedReplayBuffer(ReplayBuffer):
         return (self.weight[index] / self._min_prio)**(-self._beta)
 
     def update_weight(
-        self, index: np.ndarray, new_weight: Union[np.ndarray, torch.Tensor]
+        self, index: np.ndarray, new_weight: Union[np.ndarray, ms.Tensor]
     ) -> None:
         """Update priority weight by index in this buffer.
 

@@ -2,7 +2,8 @@ from numbers import Number
 from typing import List, Optional, Union
 
 import numpy as np
-import torch
+import mindspore as ms
+from mindspore import ops,nn
 
 
 class MovAvg(object):
@@ -12,7 +13,7 @@ class MovAvg(object):
     ::
 
         >>> stat = MovAvg(size=66)
-        >>> stat.add(torch.tensor(5))
+        >>> stat.add(ms.tensor(5))
         5.0
         >>> stat.add(float('inf'))  # which will not add to stat
         5.0
@@ -31,15 +32,15 @@ class MovAvg(object):
         self.banned = [np.inf, np.nan, -np.inf]
 
     def add(
-        self, data_array: Union[Number, np.number, list, np.ndarray, torch.Tensor]
+        self, data_array: Union[Number, np.number, list, np.ndarray, ms.Tensor]
     ) -> float:
         """Add a scalar into :class:`MovAvg`.
 
         You can add ``torch.Tensor`` with only one element, a python scalar, or
         a list of python scalar.
         """
-        if isinstance(data_array, torch.Tensor):
-            data_array = data_array.flatten().cpu().numpy()
+        if isinstance(data_array, ms.Tensor):
+            data_array = data_array.flatten().asnumpy()
         if np.isscalar(data_array):
             data_array = [data_array]
         for number in data_array:  # type: ignore

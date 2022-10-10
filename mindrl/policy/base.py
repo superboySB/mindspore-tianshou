@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABCMeta, abstractmethod
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import gym
@@ -7,15 +7,14 @@ import numpy as np
 
 from numba import njit
 
-
 import mindspore as ms
-from mindspore import nn,ops
+from mindspore import nn, ops
 
 from mindrl.data import Batch, ReplayBuffer, to_numpy, to_mindspore_as
 from mindrl.utils import MultipleLRSchedulers
 
 
-class BasePolicy(ABC, nn.Cell):
+class BasePolicy(nn.Cell):
     """The base class for any RL policy.
 
     Tianshou aims to modularize RL algorithms. It comes into several classes of
@@ -63,13 +62,13 @@ class BasePolicy(ABC, nn.Cell):
     """
 
     def __init__(
-        self,
-        observation_space: Optional[gym.Space] = None,
-        action_space: Optional[gym.Space] = None,
-        action_scaling: bool = False,
-        action_bound_method: str = "",
-        lr_scheduler: Optional[Union[nn.ExponentialDecayLR,
-                                     MultipleLRSchedulers]] = None,
+            self,
+            observation_space: Optional[gym.Space] = None,
+            action_space: Optional[gym.Space] = None,
+            action_scaling: bool = False,
+            action_bound_method: str = "",
+            lr_scheduler: Optional[Union[nn.ExponentialDecayLR,
+                                         MultipleLRSchedulers]] = None,
     ) -> None:
         super().__init__()
         self.observation_space = observation_space
@@ -113,10 +112,10 @@ class BasePolicy(ABC, nn.Cell):
 
     @abstractmethod
     def construct(
-        self,
-        batch: Batch,
-        state: Optional[Union[dict, Batch, np.ndarray]] = None,
-        **kwargs: Any,
+            self,
+            batch: Batch,
+            state: Optional[Union[dict, Batch, np.ndarray]] = None,
+            **kwargs: Any,
     ) -> Batch:
         """Compute action over the given batch data.
 
@@ -186,7 +185,7 @@ class BasePolicy(ABC, nn.Cell):
         return act
 
     def map_action_inverse(
-        self, act: Union[Batch, List, np.ndarray]
+            self, act: Union[Batch, List, np.ndarray]
     ) -> Union[Batch, List, np.ndarray]:
         """Inverse operation to :meth:`~mindrl.policy.BasePolicy.map_action`.
 
@@ -213,7 +212,7 @@ class BasePolicy(ABC, nn.Cell):
         return act
 
     def process_fn(
-        self, batch: Batch, buffer: ReplayBuffer, indices: np.ndarray
+            self, batch: Batch, buffer: ReplayBuffer, indices: np.ndarray
     ) -> Batch:
         """Pre-process the data from the provided replay buffer.
 
@@ -246,7 +245,7 @@ class BasePolicy(ABC, nn.Cell):
         pass
 
     def post_process_fn(
-        self, batch: Batch, buffer: ReplayBuffer, indices: np.ndarray
+            self, batch: Batch, buffer: ReplayBuffer, indices: np.ndarray
     ) -> None:
         """Post-process the data from the provided replay buffer.
 
@@ -306,13 +305,13 @@ class BasePolicy(ABC, nn.Cell):
 
     @staticmethod
     def compute_episodic_return(
-        batch: Batch,
-        buffer: ReplayBuffer,
-        indices: np.ndarray,
-        v_s_: Optional[Union[np.ndarray, ms.Tensor]] = None,
-        v_s: Optional[Union[np.ndarray, ms.Tensor]] = None,
-        gamma: float = 0.99,
-        gae_lambda: float = 0.95,
+            batch: Batch,
+            buffer: ReplayBuffer,
+            indices: np.ndarray,
+            v_s_: Optional[Union[np.ndarray, ms.Tensor]] = None,
+            v_s: Optional[Union[np.ndarray, ms.Tensor]] = None,
+            gamma: float = 0.99,
+            gae_lambda: float = 0.95,
     ) -> Tuple[np.ndarray, np.ndarray]:
         """Compute returns over given batch.
 
@@ -350,13 +349,13 @@ class BasePolicy(ABC, nn.Cell):
 
     @staticmethod
     def compute_nstep_return(
-        batch: Batch,
-        buffer: ReplayBuffer,
-        indice: np.ndarray,
-        target_q_fn: Callable[[ReplayBuffer, np.ndarray], ms.Tensor],
-        gamma: float = 0.99,
-        n_step: int = 1,
-        rew_norm: bool = False,
+            batch: Batch,
+            buffer: ReplayBuffer,
+            indice: np.ndarray,
+            target_q_fn: Callable[[ReplayBuffer, np.ndarray], ms.Tensor],
+            gamma: float = 0.99,
+            n_step: int = 1,
+            rew_norm: bool = False,
     ) -> Batch:
         r"""Compute n-step return for Q-learning targets.
 
@@ -414,12 +413,12 @@ class BasePolicy(ABC, nn.Cell):
 
 @njit
 def _gae_return(
-    v_s: np.ndarray,
-    v_s_: np.ndarray,
-    rew: np.ndarray,
-    end_flag: np.ndarray,
-    gamma: float,
-    gae_lambda: float,
+        v_s: np.ndarray,
+        v_s_: np.ndarray,
+        rew: np.ndarray,
+        end_flag: np.ndarray,
+        gamma: float,
+        gae_lambda: float,
 ) -> np.ndarray:
     returns = np.zeros(rew.shape)
     delta = rew + v_s_ * gamma - v_s
@@ -433,12 +432,12 @@ def _gae_return(
 
 @njit
 def _nstep_return(
-    rew: np.ndarray,
-    end_flag: np.ndarray,
-    target_q: np.ndarray,
-    indices: np.ndarray,
-    gamma: float,
-    n_step: int,
+        rew: np.ndarray,
+        end_flag: np.ndarray,
+        target_q: np.ndarray,
+        indices: np.ndarray,
+        gamma: float,
+        n_step: int,
 ) -> np.ndarray:
     gamma_buffer = np.ones(n_step + 1)
     for i in range(1, n_step + 1):

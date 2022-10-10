@@ -4,7 +4,9 @@ from typing import Any, Callable, Dict, List, Optional, Union
 
 import gym
 import numpy as np
-import torch
+
+import mindspore as ms
+from mindspore import ops
 
 from mindrl.data import (
     Batch,
@@ -167,7 +169,7 @@ class Collector(object):
         """Reset the hidden state: self.data.state[id]."""
         if hasattr(self.data.policy, "hidden_state"):
             state = self.data.policy.hidden_state  # it is a reference
-            if isinstance(state, torch.Tensor):
+            if isinstance(state, ms.Tensor):
                 state[id].zero_()
             elif isinstance(state, np.ndarray):
                 state[id] = None if state.dtype == object else 0
@@ -207,7 +209,6 @@ class Collector(object):
         n_episode: Optional[int] = None,
         random: bool = False,
         render: Optional[float] = None,
-        no_grad: bool = True,
         gym_reset_kwargs: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """Collect a specified number of step or episode.
@@ -223,7 +224,7 @@ class Collector(object):
         :param float render: the sleep time between rendering consecutive frames.
             Default to None (no rendering).
         :param bool no_grad: whether to retain gradient in policy.forward(). Default to
-            True (no gradient retaining).
+            True (no gradient retaining). TODO: MindSpore 的正向计算均在torch.no_grad 情况下进行的。
         :param gym_reset_kwargs: extra keyword arguments to pass into the environment's
             reset function. Defaults to None (extra keyword arguments)
 
@@ -291,12 +292,7 @@ class Collector(object):
                 act_sample = self.policy.map_action_inverse(act_sample)  # type: ignore
                 self.data.update(act=act_sample)
             else:
-                if no_grad:
-                    with torch.no_grad():  # faster than retain_grad version
-                        # self.data.obs will be used by agent to get result
-                        result = self.policy(self.data, last_state)
-                else:
-                    result = self.policy(self.data, last_state)
+                result = self.policy(self.data, last_state)
                 # update state / act / policy into self.data
                 policy = result.get("policy", Batch())
                 assert isinstance(policy, Batch)
@@ -474,7 +470,6 @@ class AsyncCollector(Collector):
         n_episode: Optional[int] = None,
         random: bool = False,
         render: Optional[float] = None,
-        no_grad: bool = True,
         gym_reset_kwargs: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """Collect a specified number of step or episode with async env setting.
@@ -554,12 +549,7 @@ class AsyncCollector(Collector):
                 act_sample = self.policy.map_action_inverse(act_sample)  # type: ignore
                 self.data.update(act=act_sample)
             else:
-                if no_grad:
-                    with torch.no_grad():  # faster than retain_grad version
-                        # self.data.obs will be used by agent to get result
-                        result = self.policy(self.data, last_state)
-                else:
-                    result = self.policy(self.data, last_state)
+                result = self.policy(self.data, last_state)
                 # update state / act / policy into self.data
                 policy = result.get("policy", Batch())
                 assert isinstance(policy, Batch)

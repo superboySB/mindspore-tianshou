@@ -351,8 +351,8 @@ class Batch:
 
     def to_mindspore(
             self,
-            dtype: Optional[ms.dtype] = None,
-            device: Union[str, int] = "CPU",
+            dtype: ms.dtype = None,
+            device: str = "CPU",
     ) -> None:
         """Change all numpy.ndarray to torch.Tensor in-place."""
 

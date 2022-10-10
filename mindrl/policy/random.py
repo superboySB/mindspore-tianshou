@@ -12,7 +12,7 @@ class RandomPolicy(BasePolicy):
     It randomly chooses an action from the legal action.
     """
 
-    def forward(
+    def construct(
         self,
         batch: Batch,
         state: Optional[Union[dict, Batch, np.ndarray]] = None,

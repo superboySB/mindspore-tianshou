@@ -1,7 +1,7 @@
 from typing import Any, Callable, Optional, Tuple
 
 from tensorboard.backend.event_processing import event_accumulator
-from torch.utils.tensorboard import SummaryWriter
+from tensorboardX import SummaryWriter
 
 from mindrl.utils.logger.base import LOG_DATA_TYPE, BaseLogger
 from mindrl.utils.warning import deprecation

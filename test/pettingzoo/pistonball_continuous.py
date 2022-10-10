@@ -11,13 +11,13 @@ import torch.nn as nn
 from torch.distributions import Independent, Normal
 from torch.utils.tensorboard import SummaryWriter
 
-from mindrl.data import Collector, VectorReplayBuffer
-from mindrl.env import DummyVectorEnv
-from mindrl.env.pettingzoo_env import PettingZooEnv
-from mindrl.policy import BasePolicy, MultiAgentPolicyManager, PPOPolicy
-from mindrl.trainer import onpolicy_trainer
-from mindrl.utils import TensorboardLogger
-from mindrl.utils.net.continuous import ActorProb, Critic
+from tianshou.data import Collector, VectorReplayBuffer
+from tianshou.env import DummyVectorEnv
+from tianshou.env.pettingzoo_env import PettingZooEnv
+from tianshou.policy import BasePolicy, MultiAgentPolicyManager, PPOPolicy
+from tianshou.trainer import onpolicy_trainer
+from tianshou.utils import TensorboardLogger
+from tianshou.utils.net.continuous import ActorProb, Critic
 
 
 class DQN(nn.Module):

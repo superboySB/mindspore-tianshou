@@ -15,7 +15,7 @@ from mindrl.data.batch import Batch, _parse_value
 def to_numpy(x: Any) -> Union[Batch, np.ndarray]:
     """Return an object without torch.Tensor."""
     if isinstance(x, ms.Tensor):  # most often case
-        return ops.stop_gradient(x).asnumpy()
+        return x.asnumpy()
     elif isinstance(x, np.ndarray):  # second often case
         return x
     elif isinstance(x, (np.number, np.bool_, Number)):
@@ -35,7 +35,7 @@ def to_numpy(x: Any) -> Union[Batch, np.ndarray]:
 @no_type_check
 def to_mindspore(
     x: Any,
-    dtype: Optional[ms.dtype] = None,
+    dtype: ms.dtype = None,
     device: Union[str, int] = "CPU",
 ) -> Union[Batch, ms.Tensor]:
     """Return an object without np.ndarray."""
@@ -57,7 +57,7 @@ def to_mindspore(
         x.to_mindspore(dtype, device)
         return x
     elif isinstance(x, (list, tuple)):
-        return to_mindspore(_parse_value(x), dtype, device)
+        return to_mindspore(_parse_value(x), dtype)
     else:  # fallback
         raise TypeError(f"object {x} cannot be converted to torch.")
 
@@ -69,7 +69,7 @@ def to_mindspore_as(x: Any, y: ms.Tensor) -> Union[Batch, ms.Tensor]:
     Same as ``to_torch(x, dtype=y.dtype, device=y.device)``.
     """
     assert isinstance(y, ms.Tensor)
-    return to_mindspore(x, dtype=y.dtype, device=y.device)
+    return to_mindspore(x, dtype=y.dtype)
 
 
 # Note: object is used as a proxy for objects that can be pickled

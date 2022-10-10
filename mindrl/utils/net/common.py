@@ -69,7 +69,7 @@ class MLP(nn.Cell):
         hidden_sizes: Sequence[int] = (),
         norm_layer: Optional[Union[CellType, Sequence[CellType]]] = None,
         activation: Optional[Union[CellType, Sequence[CellType]]] = nn.ReLU,
-        device: Union[str, int] = "CPU",
+        device: str= "CPU",
         linear_layer: Type[nn.Dense] = nn.Dense,
         flatten_input: bool = True,
 
@@ -105,8 +105,7 @@ class MLP(nn.Cell):
         self.flatten_input = flatten_input
 
     @no_type_check
-    def construct(self, obs: Union[np.ndarray, ms.Tensor]) -> ms.Tensor:
-        obs = ms.Tensor(obs,dtype=ms.float32)
+    def construct(self, obs: ms.Tensor) -> ms.Tensor:
         if self.flatten_input:
             # obs = obs.flatten(1)
             bsz=obs.shape[0]
@@ -163,7 +162,7 @@ class Net(nn.Cell):
         state_shape: Union[int, Sequence[int]],
         action_shape: Union[int, Sequence[int]] = 0,
         hidden_sizes: Sequence[int] = (),
-        device: Union[str, int] = "CPU",
+        device: str = "CPU",
         norm_layer: Optional[CellType] = None,
         activation: Optional[CellType] = nn.ReLU,
         softmax: bool = False,
@@ -206,12 +205,12 @@ class Net(nn.Cell):
 
     def construct(
         self,
-        obs: Union[np.ndarray, ms.Tensor],
+        obs: ms.Tensor,
         state: Any = None,
         info: Dict[str, Any] = {},
     ) -> Tuple[ms.Tensor, Any]:
         """Mapping: obs -> flatten (inside MLP)-> logits."""
-        logits = self.model(obs)
+        logits = self.model(obs)  # TODO: 和torch的MLP输出差了好多呀
         bsz = logits.shape[0]
         if self.use_dueling:  # Dueling DQN
             q, v = self.Q(logits), self.V(logits)
@@ -238,7 +237,7 @@ class Recurrent(nn.Cell):
         layer_num: int,
         state_shape: Union[int, Sequence[int]],
         action_shape: Union[int, Sequence[int]],
-        device: Union[str, int] = "CPU",
+        device: str = "CPU",
         hidden_layer_size: int = 128,
     ) -> None:
         super().__init__()
@@ -387,7 +386,7 @@ class BranchingNet(nn.Cell):
         action_hidden_sizes: List[int] = [],
         norm_layer: Optional[CellType] = None,
         activation: Optional[CellType] = nn.ReLU,
-        device: Union[str, int] = "CPU",
+        device: str = "CPU",
     ) -> None:
         super().__init__()
         self.device = device
