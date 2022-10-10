@@ -3,9 +3,9 @@
 # 3.Refer to https://www.mindspore.cn/search?inputValue=analyze_fail.dat to get more instructions.
 # ===============================================================================
 
-# [No.1] 80041_train_step.10308
+# [No.1] 319082_318781_train_step.40935
 # In file /home/dzp/dzp_is_sb/mindrl/mindrl/policy/modelfree/dqn.py(212)/        def train_step(obs, act, returns, obs_next):/
-funcgraph fg_10308(
+funcgraph fg_40935(
         %para1 : Tensor(F32)[64, 4]    # obs
         , %para2 : Tensor(I32)[64]    # act
         , %para3 : Tensor(F32)[64]    # returns
@@ -55,906 +55,190 @@ funcgraph fg_10308(
         , %para47 : Ref[Tensor(F32)][]    # learning_rate
         , %para48 : Ref[Tensor(I32)][1]    # global_step
     ) {
-    %1 : Tuple[Tensor(F32),Func] = FuncGraph::fg_10315(%para2, %para3, %para4, UMonad[U])    #(Tensor(I32)[64], Tensor(F32)[64], Tensor(F32)[64, 4], UMonad)    # fg_10315=▶80116_forward_fn.10315 #scope: Default
-#10316
-    %2 : Tensor(F32)[] = Primitive::TupleGetItem{prim_type=1}(%1, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10317
-    %3 : Tuple[Tensor(F32),Func] = FuncGraph::fg_10315(%para2, %para3, %para4, UMonad[U])    #(Tensor(I32)[64], Tensor(F32)[64], Tensor(F32)[64, 4], UMonad)    # fg_10315=▶80116_forward_fn.10315 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/functional.py(446)/            return res, _grad_weight(fn, weights)(*args)/#10318
-    %4 : Func = Primitive::TupleGetItem{prim_type=1}(%3, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/functional.py(446)/            return res, _grad_weight(fn, weights)(*args)/#10318
+    %1 : Tensor(F32)[128, 4] = Primitive::Load{prim_type=1}(%para7, UMonad[U])    #(Ref[Tensor(F32)][128, 4], UMonad) #scope: Default
+#equiv[CNode]40936
 
 #------------------------> 0
-    %5 = %4(Tensor(43)[])    #(Tensor(F32)[]) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/functional.py(446)/            return res, _grad_weight(fn, weights)(*args)/#10318
-    %6 = Primitive::TupleGetItem{prim_type=1}(%5, I64(0))    #(Undefined, Undefined) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/functional.py(446)/            return res, _grad_weight(fn, weights)(*args)/#10318
-    %7 = PrimitivePy::RefToEmbed{prim_type=1}(%para7)    #(Ref[Tensor(F32)][128, 4]) #scope: Default
-#[CNode]10319
-    %8 = Primitive::UpdateState{prim_type=1}(UMonad[U], %3)    #(UMonad, Tuple[Tensor(F32),Func]) #scope: Default
-#[CNode]10320
-    %9 = Primitive::Load{prim_type=1}(%para7, %8)    #(Ref[Tensor(F32)][128, 4], Undefined) #scope: Default
-#[CNode]10321
-    %10 = PrimitivePy::ZerosLike{prim_type=1}[output_names=["y"], input_names=["x"]](%9)    #(Undefined) #scope: Default
-#[CNode]10319
-    %11 = PrimitivePy::EnvironGet{prim_type=1}(%6, %7, %10)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10319
-    %12 = PrimitivePy::RefToEmbed{prim_type=1}(%para8)    #(Ref[Tensor(F32)][128]) #scope: Default
-#[CNode]10319
-    %13 = Primitive::Load{prim_type=1}(%para8, %8)    #(Ref[Tensor(F32)][128], Undefined) #scope: Default
-#[CNode]10322
-    %14 = PrimitivePy::ZerosLike{prim_type=1}[output_names=["y"], input_names=["x"]](%13)    #(Undefined) #scope: Default
-#[CNode]10319
-    %15 = PrimitivePy::EnvironGet{prim_type=1}(%6, %12, %14)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10319
-    %16 = PrimitivePy::RefToEmbed{prim_type=1}(%para9)    #(Ref[Tensor(F32)][128, 128]) #scope: Default
-#[CNode]10319
-    %17 = Primitive::Load{prim_type=1}(%para9, %8)    #(Ref[Tensor(F32)][128, 128], Undefined) #scope: Default
-#[CNode]10323
-    %18 = PrimitivePy::ZerosLike{prim_type=1}[output_names=["y"], input_names=["x"]](%17)    #(Undefined) #scope: Default
-#[CNode]10319
-    %19 = PrimitivePy::EnvironGet{prim_type=1}(%6, %16, %18)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10319
-    %20 = PrimitivePy::RefToEmbed{prim_type=1}(%para10)    #(Ref[Tensor(F32)][128]) #scope: Default
-#[CNode]10319
-    %21 = Primitive::Load{prim_type=1}(%para10, %8)    #(Ref[Tensor(F32)][128], Undefined) #scope: Default
-#[CNode]10322
-    %22 = PrimitivePy::ZerosLike{prim_type=1}[output_names=["y"], input_names=["x"]](%21)    #(Undefined) #scope: Default
-#[CNode]10319
-    %23 = PrimitivePy::EnvironGet{prim_type=1}(%6, %20, %22)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10319
-    %24 = PrimitivePy::RefToEmbed{prim_type=1}(%para11)    #(Ref[Tensor(F32)][128, 128]) #scope: Default
-#[CNode]10319
-    %25 = Primitive::Load{prim_type=1}(%para11, %8)    #(Ref[Tensor(F32)][128, 128], Undefined) #scope: Default
-#[CNode]10323
-    %26 = PrimitivePy::ZerosLike{prim_type=1}[output_names=["y"], input_names=["x"]](%25)    #(Undefined) #scope: Default
-#[CNode]10319
-    %27 = PrimitivePy::EnvironGet{prim_type=1}(%6, %24, %26)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10319
-    %28 = PrimitivePy::RefToEmbed{prim_type=1}(%para12)    #(Ref[Tensor(F32)][128]) #scope: Default
-#[CNode]10319
-    %29 = Primitive::Load{prim_type=1}(%para12, %8)    #(Ref[Tensor(F32)][128], Undefined) #scope: Default
-#[CNode]10322
-    %30 = PrimitivePy::ZerosLike{prim_type=1}[output_names=["y"], input_names=["x"]](%29)    #(Undefined) #scope: Default
-#[CNode]10319
-    %31 = PrimitivePy::EnvironGet{prim_type=1}(%6, %28, %30)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10319
-    %32 = PrimitivePy::RefToEmbed{prim_type=1}(%para13)    #(Ref[Tensor(F32)][128, 128]) #scope: Default
-#[CNode]10319
-    %33 = Primitive::Load{prim_type=1}(%para13, %8)    #(Ref[Tensor(F32)][128, 128], Undefined) #scope: Default
-#[CNode]10323
-    %34 = PrimitivePy::ZerosLike{prim_type=1}[output_names=["y"], input_names=["x"]](%33)    #(Undefined) #scope: Default
-#[CNode]10319
-    %35 = PrimitivePy::EnvironGet{prim_type=1}(%6, %32, %34)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10319
-    %36 = PrimitivePy::RefToEmbed{prim_type=1}(%para14)    #(Ref[Tensor(F32)][128]) #scope: Default
-#[CNode]10319
-    %37 = Primitive::Load{prim_type=1}(%para14, %8)    #(Ref[Tensor(F32)][128], Undefined) #scope: Default
-#[CNode]10322
-    %38 = PrimitivePy::ZerosLike{prim_type=1}[output_names=["y"], input_names=["x"]](%37)    #(Undefined) #scope: Default
-#[CNode]10319
-    %39 = PrimitivePy::EnvironGet{prim_type=1}(%6, %36, %38)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10319
-    %40 = PrimitivePy::RefToEmbed{prim_type=1}(%para15)    #(Ref[Tensor(F32)][2, 128]) #scope: Default
-#[CNode]10324
-    %41 = Primitive::Load{prim_type=1}(%para15, %8)    #(Ref[Tensor(F32)][2, 128], Undefined) #scope: Default
-#[CNode]10325
-    %42 = PrimitivePy::ZerosLike{prim_type=1}[output_names=["y"], input_names=["x"]](%41)    #(Undefined) #scope: Default
-#[CNode]10324
-    %43 = PrimitivePy::EnvironGet{prim_type=1}(%6, %40, %42)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10324
-    %44 = PrimitivePy::RefToEmbed{prim_type=1}(%para16)    #(Ref[Tensor(F32)][2]) #scope: Default
-#[CNode]10324
-    %45 = Primitive::Load{prim_type=1}(%para16, %8)    #(Ref[Tensor(F32)][2], Undefined) #scope: Default
-#[CNode]10326
-    %46 = PrimitivePy::ZerosLike{prim_type=1}[output_names=["y"], input_names=["x"]](%45)    #(Undefined) #scope: Default
-#[CNode]10324
-    %47 = PrimitivePy::EnvironGet{prim_type=1}(%6, %44, %46)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10324
-    %48 = Primitive::MakeTuple{prim_type=1}(%11, %15, %19, %23, %27, %31, %35, %39, %43, %47)    #(Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10327
-    %49 = PrimitivePy::MakeTuple{prim_type=1}(%2, %48)    #(Tensor(F32)[], Undefined) #scope: Default
-      # In file /home/dzp/dzp_is_sb/mindrl/mindrl/policy/modelfree/dqn.py(215)/            return loss,grads/#[CNode]10328
-    %50 = Primitive::Load{prim_type=1}(%para5, %8)    #(Ref[Tensor(F32)][1], Undefined) #scope: Default
-#[CNode]10329
-    %51 = Primitive::MakeTuple{prim_type=1}(%41, %33, %25, %17, %9, %13, %21, %29, %37, %45, %50)    #(Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10330
-    %52 = Primitive::UpdateState{prim_type=1}(%8, %51)    #(Undefined, Undefined) #scope: Default
-#[CNode]10331
-    %53 = PrimitivePy::Mul{prim_type=2}[output_names=["output"], input_names=["x", "y"]](%50, Tensor(43)[])    #(Undefined, Undefined) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(543)/        beta1_power = self.beta1_power * self.beta1/#beta1_power
-    %54 = PrimitivePy::Assign{prim_type=1}[output_names=["output"], side_effect_mem=Bool(1), input_names=["ref", "value"]](%para5, %53, %52)    #(Ref[Tensor(F32)][1], Undefined, Undefined) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/function/parameter_func.py(55)/    return assign_(variable, value)/#[CNode]10332
-    %55 = Primitive::UpdateState{prim_type=1}(%52, %54)    #(Undefined, Undefined) #scope: Default
-#[CNode]10333
-    %56 = Primitive::Load{prim_type=1}(%para6, %55)    #(Ref[Tensor(F32)][1], Undefined) #scope: Default
-#[CNode]10334
-    %57 = Primitive::UpdateState{prim_type=1}(%55, %56)    #(Undefined, Undefined) #scope: Default
-#[CNode]10335
-    %58 = PrimitivePy::Mul{prim_type=2}[output_names=["output"], input_names=["x", "y"]](%56, Tensor(43)[])    #(Undefined, Undefined) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(545)/        beta2_power = self.beta2_power * self.beta2/#beta2_power
-    %59 = PrimitivePy::Assign{prim_type=1}[output_names=["output"], side_effect_mem=Bool(1), input_names=["ref", "value"]](%para6, %58, %57)    #(Ref[Tensor(F32)][1], Undefined, Undefined) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/function/parameter_func.py(55)/    return assign_(variable, value)/#[CNode]10332
-    %60 = Primitive::UpdateState{prim_type=1}(%57, %59)    #(Undefined, Undefined) #scope: Default
-#[CNode]10333
-    %61 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para7, %para17, %para27, %53, %58, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %11, %60)    #(Ref[Tensor(F32)][128, 4], Ref[Tensor(F32)][128, 4], Ref[Tensor(F32)][128, 4], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]10336
-    %62 = Primitive::UpdateState{prim_type=1}(%60, %61)    #(Undefined, Undefined) #scope: Default
-#[CNode]10337
-    %63 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para8, %para18, %para28, %53, %58, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %15, %62)    #(Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]10336
-    %64 = Primitive::UpdateState{prim_type=1}(%62, %63)    #(Undefined, Undefined) #scope: Default
-#[CNode]10338
-    %65 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para9, %para19, %para29, %53, %58, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %19, %64)    #(Ref[Tensor(F32)][128, 128], Ref[Tensor(F32)][128, 128], Ref[Tensor(F32)][128, 128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]10336
-    %66 = Primitive::UpdateState{prim_type=1}(%64, %65)    #(Undefined, Undefined) #scope: Default
-#[CNode]10339
-    %67 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para10, %para20, %para30, %53, %58, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %23, %66)    #(Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]10336
-    %68 = Primitive::UpdateState{prim_type=1}(%66, %67)    #(Undefined, Undefined) #scope: Default
-#[CNode]10338
-    %69 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para11, %para21, %para31, %53, %58, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %27, %68)    #(Ref[Tensor(F32)][128, 128], Ref[Tensor(F32)][128, 128], Ref[Tensor(F32)][128, 128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]10336
-    %70 = Primitive::UpdateState{prim_type=1}(%68, %69)    #(Undefined, Undefined) #scope: Default
-#[CNode]10339
-    %71 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para12, %para22, %para32, %53, %58, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %31, %70)    #(Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]10336
-    %72 = Primitive::UpdateState{prim_type=1}(%70, %71)    #(Undefined, Undefined) #scope: Default
-#[CNode]10338
-    %73 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para13, %para23, %para33, %53, %58, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %35, %72)    #(Ref[Tensor(F32)][128, 128], Ref[Tensor(F32)][128, 128], Ref[Tensor(F32)][128, 128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]10336
-    %74 = Primitive::UpdateState{prim_type=1}(%72, %73)    #(Undefined, Undefined) #scope: Default
-#[CNode]10339
-    %75 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para14, %para24, %para34, %53, %58, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %39, %74)    #(Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]10336
-    %76 = Primitive::UpdateState{prim_type=1}(%74, %75)    #(Undefined, Undefined) #scope: Default
-#[CNode]10338
-    %77 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para15, %para25, %para35, %53, %58, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %43, %76)    #(Ref[Tensor(F32)][2, 128], Ref[Tensor(F32)][2, 128], Ref[Tensor(F32)][2, 128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]10336
-    %78 = Primitive::UpdateState{prim_type=1}(%76, %77)    #(Undefined, Undefined) #scope: Default
-#[CNode]10340
-    %79 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para16, %para26, %para36, %53, %58, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %47, %78)    #(Ref[Tensor(F32)][2], Ref[Tensor(F32)][2], Ref[Tensor(F32)][2], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]10336
-    %80 = Primitive::UpdateState{prim_type=1}(%78, %79)    #(Undefined, Undefined) #scope: Default
-#[CNode]10341
-    %81 = Primitive::Depend{prim_type=1}[side_effect_propagate=I64(1)](%49, %80)    #(Undefined, Undefined) #scope: Default
-#[CNode]10342
-    Primitive::Return{prim_type=1}(%81)    #(Undefined) #scope: Default
-      # In file /home/dzp/dzp_is_sb/mindrl/mindrl/policy/modelfree/dqn.py(215)/            return loss,grads/#[CNode]10343
-}
-
-
-# [No.2] ◀80116_forward_fn.10311
-# In file /home/dzp/dzp_is_sb/mindrl/mindrl/policy/modelfree/dqn.py(196)/        def forward_fn(act, returns, obs_next):/
-funcgraph fg_10311[fg_10315](
-        %para49 : Tensor(F32)[]    # [Parameter]10312
-    ) {
-    %1 : EnvType = Primitive::EnvironCreate{prim_type=1}() #scope: Default
-#[CNode]10344
-    %2 : SymType = Primitive::embed{prim_type=1}(%para7)    #(Ref[Tensor(F32)][128, 4]) #scope: Default
-#[CNode]10345
-    %3 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10346(%para7, %para-1)    #(Ref[Tensor(F32)][128, 4], UMonad)    # fg_10346=▶Load.10346 #scope: Default
-#▲[CNode]10347
-    %4 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%3, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10348
-    %5 : $(▶80116_forward_fn.10315):Tensor(F32)[128, 4] = Primitive::TupleGetItem{prim_type=1}(%3, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10349
-    %6 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10350(%para-1, %5)    #(Tensor(F32)[64, 4], Tensor(F32)[128, 4])    # fg_10350=▶MatMul.10350 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(462)/        x = self.matmul(x, self.weight)/#▲x
-    %7 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%6, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10351
-    %8 : $(▶80116_forward_fn.10315):Tensor(F32)[64, 128] = Primitive::TupleGetItem{prim_type=1}(%6, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10352
-    %9 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10353(%para8, %para-1)    #(Ref[Tensor(F32)][128], UMonad)    # fg_10353=▶Load.10353 #scope: Default
-#▲[CNode]10354
-    %10 : $(▶80116_forward_fn.10315):Tensor(F32)[128] = Primitive::TupleGetItem{prim_type=1}(%9, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10355
-    %11 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10356(%8, %10)    #(Tensor(F32)[64, 128], Tensor(F32)[128])    # fg_10356=▶BiasAdd.10356 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(464)/            x = self.bias_add(x, self.bias)/#▲x
-    %12 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%11, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10357
-    %13 : $(▶80116_forward_fn.10315):Tensor(F32)[64, 128] = Primitive::TupleGetItem{prim_type=1}(%11, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10358
-    %14 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10359(%13)    #(Tensor(F32)[64, 128])    # fg_10359=▶ReLU.10359 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/activation.py(362)/        return self.relu(x)/#▲[CNode]10360
-    %15 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%14, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10361
-    %16 : $(▶80116_forward_fn.10315):Tensor(F32)[64, 128] = Primitive::TupleGetItem{prim_type=1}(%14, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10362
-    %17 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10363(%para9, %para-1)    #(Ref[Tensor(F32)][128, 128], UMonad)    # fg_10363=▶Load.10363 #scope: Default
-#▲[CNode]10364
-    %18 : $(▶80116_forward_fn.10315):Tensor(F32)[128, 128] = Primitive::TupleGetItem{prim_type=1}(%17, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10365
-    %19 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10309(%16, %18)    #(Tensor(F32)[64, 128], Tensor(F32)[128, 128])    # fg_10309=▶MatMul.10309 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(462)/        x = self.matmul(x, self.weight)/#▲x
-    %20 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%19, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10366
-    %21 : $(▶80116_forward_fn.10315):Tensor(F32)[64, 128] = Primitive::TupleGetItem{prim_type=1}(%19, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10367
-    %22 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10368(%para10, %para-1)    #(Ref[Tensor(F32)][128], UMonad)    # fg_10368=▶Load.10368 #scope: Default
-#▲[CNode]10369
-    %23 : $(▶80116_forward_fn.10315):Tensor(F32)[128] = Primitive::TupleGetItem{prim_type=1}(%22, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10370
-    %24 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10310(%21, %23)    #(Tensor(F32)[64, 128], Tensor(F32)[128])    # fg_10310=▶BiasAdd.10310 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(464)/            x = self.bias_add(x, self.bias)/#▲x
-    %25 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%24, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10371
-    %26 : $(▶80116_forward_fn.10315):Tensor(F32)[64, 128] = Primitive::TupleGetItem{prim_type=1}(%24, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10372
-    %27 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10373(%26)    #(Tensor(F32)[64, 128])    # fg_10373=▶ReLU.10373 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/activation.py(362)/        return self.relu(x)/#▲[CNode]10374
-    %28 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%27, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10375
-    %29 : $(▶80116_forward_fn.10315):Tensor(F32)[64, 128] = Primitive::TupleGetItem{prim_type=1}(%27, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10376
-    %30 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10363(%para11, %para-1)    #(Ref[Tensor(F32)][128, 128], UMonad)    # fg_10363=▶Load.10363 #scope: Default
-#▲[CNode]10364
-    %31 : $(▶80116_forward_fn.10315):Tensor(F32)[128, 128] = Primitive::TupleGetItem{prim_type=1}(%30, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10377
-    %32 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10309(%29, %31)    #(Tensor(F32)[64, 128], Tensor(F32)[128, 128])    # fg_10309=▶MatMul.10309 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(462)/        x = self.matmul(x, self.weight)/#▲x
-    %33 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%32, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10378
-    %34 : $(▶80116_forward_fn.10315):Tensor(F32)[64, 128] = Primitive::TupleGetItem{prim_type=1}(%32, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10379
-    %35 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10368(%para12, %para-1)    #(Ref[Tensor(F32)][128], UMonad)    # fg_10368=▶Load.10368 #scope: Default
-#▲[CNode]10369
-    %36 : $(▶80116_forward_fn.10315):Tensor(F32)[128] = Primitive::TupleGetItem{prim_type=1}(%35, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10380
-    %37 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10310(%34, %36)    #(Tensor(F32)[64, 128], Tensor(F32)[128])    # fg_10310=▶BiasAdd.10310 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(464)/            x = self.bias_add(x, self.bias)/#▲x
-    %38 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%37, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10381
-    %39 : $(▶80116_forward_fn.10315):Tensor(F32)[64, 128] = Primitive::TupleGetItem{prim_type=1}(%37, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10382
-    %40 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10383(%39)    #(Tensor(F32)[64, 128])    # fg_10383=▶ReLU.10383 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/activation.py(362)/        return self.relu(x)/#▲[CNode]10384
-    %41 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%40, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10385
-    %42 : $(▶80116_forward_fn.10315):Tensor(F32)[64, 128] = Primitive::TupleGetItem{prim_type=1}(%40, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10386
-    %43 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10363(%para13, %para-1)    #(Ref[Tensor(F32)][128, 128], UMonad)    # fg_10363=▶Load.10363 #scope: Default
-#▲[CNode]10364
-    %44 : $(▶80116_forward_fn.10315):Tensor(F32)[128, 128] = Primitive::TupleGetItem{prim_type=1}(%43, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10387
-    %45 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10309(%42, %44)    #(Tensor(F32)[64, 128], Tensor(F32)[128, 128])    # fg_10309=▶MatMul.10309 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(462)/        x = self.matmul(x, self.weight)/#▲x
-    %46 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%45, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10388
-    %47 : $(▶80116_forward_fn.10315):Tensor(F32)[64, 128] = Primitive::TupleGetItem{prim_type=1}(%45, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10389
-    %48 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10368(%para14, %para-1)    #(Ref[Tensor(F32)][128], UMonad)    # fg_10368=▶Load.10368 #scope: Default
-#▲[CNode]10369
-    %49 : $(▶80116_forward_fn.10315):Tensor(F32)[128] = Primitive::TupleGetItem{prim_type=1}(%48, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10390
-    %50 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10310(%47, %49)    #(Tensor(F32)[64, 128], Tensor(F32)[128])    # fg_10310=▶BiasAdd.10310 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(464)/            x = self.bias_add(x, self.bias)/#▲x
-    %51 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%50, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10391
-    %52 : $(▶80116_forward_fn.10315):Tensor(F32)[64, 128] = Primitive::TupleGetItem{prim_type=1}(%50, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10392
-    %53 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10393(%52)    #(Tensor(F32)[64, 128])    # fg_10393=▶ReLU.10393 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/activation.py(362)/        return self.relu(x)/#▲[CNode]10394
-    %54 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%53, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10395
-    %55 : $(▶80116_forward_fn.10315):Tensor(F32)[64, 128] = Primitive::TupleGetItem{prim_type=1}(%53, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10396
-    %56 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10397(%para15, %para-1)    #(Ref[Tensor(F32)][2, 128], UMonad)    # fg_10397=▶Load.10397 #scope: Default
-#▲[CNode]10398
-    %57 : $(▶80116_forward_fn.10315):Tensor(F32)[2, 128] = Primitive::TupleGetItem{prim_type=1}(%56, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10399
-    %58 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10400(%55, %57)    #(Tensor(F32)[64, 128], Tensor(F32)[2, 128])    # fg_10400=▶MatMul.10400 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(462)/        x = self.matmul(x, self.weight)/#▲x
-    %59 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%58, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10401
-    %60 : $(▶80116_forward_fn.10315):Tensor(F32)[64, 2] = Primitive::TupleGetItem{prim_type=1}(%58, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10402
-    %61 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10403(%para16, %para-1)    #(Ref[Tensor(F32)][2], UMonad)    # fg_10403=▶Load.10403 #scope: Default
-#▲[CNode]10404
-    %62 : $(▶80116_forward_fn.10315):Tensor(F32)[2] = Primitive::TupleGetItem{prim_type=1}(%61, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10405
-    %63 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10406(%60, %62)    #(Tensor(F32)[64, 2], Tensor(F32)[2])    # fg_10406=▶BiasAdd.10406 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(464)/            x = self.bias_add(x, self.bias)/#▲x
-    %64 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%63, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10407
-    %65 : $(▶80116_forward_fn.10315):Tensor(F32)[64, 2] = Primitive::TupleGetItem{prim_type=1}(%63, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10408
-    %66 : $(▶80116_forward_fn.10315):Tuple[Tensor(I64),Func] = FuncGraph::fg_10409(%para-1, I64)    #(Tensor(I32)[64], TypeType)    # fg_10409=▶Cast.10409 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/composite/multitype_ops/_compile_utils.py(631)/            tensor_index = F.cast(index, mstype.int64)/#▲tensor_index
-    %67 : $(▶80116_forward_fn.10315):Tensor(I64)[64] = Primitive::TupleGetItem{prim_type=1}(%66, I64(0))    #(Tuple[Tensor(I64),Func], I64) #scope: Default
-#[CNode]10410
-    %68 : $(▶80116_forward_fn.10315):Tuple[List[Tensor(I64)*2],Func] = MakeListGradient::make_list_gradient(Tensor(35)[64], %67)    #(Tensor(I64)[64], Tensor(I64)[64]) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/_extends/parse/standard_method.py(2346)/    return _append(self_, list_item)/#▲[CNode]10411
-    %69 : $(▶80116_forward_fn.10315):List[Tensor(I64)*2] = Primitive::TupleGetItem{prim_type=1}(%68, I64(0))    #(Tuple[List[Tensor(I64)*2],Func], I64) #scope: Default
-#[CNode]10412
-    %70 : $(▶80116_forward_fn.10315):Tuple[Tensor(I64),Func] = FuncGraph::fg_10413(%69)    #(List[Tensor(I64)*2])    # fg_10413=▶Stack.10413 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/composite/multitype_ops/_compile_utils.py(663)/    indices = stack(final_index_tensors)/#▲indices
-    %71 : $(▶80116_forward_fn.10315):Tensor(I64)[64, 2] = Primitive::TupleGetItem{prim_type=1}(%70, I64(0))    #(Tuple[Tensor(I64),Func], I64) #scope: Default
-#[CNode]10414
-    %72 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10415(%65, %71)    #(Tensor(F32)[64, 2], Tensor(I64)[64, 2])    # fg_10415=▶GatherNd.10415 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/function/array_func.py(2461)/    return gather_nd_(input_x, indices)/#▲[CNode]10416
-    %73 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%72, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10417
-    %74 : $(▶80116_forward_fn.10315):Tensor(F32)[64] = Primitive::TupleGetItem{prim_type=1}(%72, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10418
-    %75 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10419(%para-1, %74)    #(Tensor(F32)[64], Tensor(F32)[64])    # fg_10419=▶Sub.10419 #scope: Default
-      # In file /home/dzp/dzp_is_sb/mindrl/mindrl/policy/modelfree/dqn.py(199)/            td_error = returns - q/#▲td_error
-    %76 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%75, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10420
-    %77 : $(▶80116_forward_fn.10315):Tensor(F32)[64] = Primitive::TupleGetItem{prim_type=1}(%75, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10421
-    %78 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10422(%77, Tensor(43)[])    #(Tensor(F32)[64], Tensor(F32)[])    # fg_10422=▶Pow.10422 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/function/math_func.py(644)/    return tensor_pow(x, y)/#▲[CNode]10423
-    %79 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%78, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10424
-    %80 : $(▶80116_forward_fn.10315):Tensor(F32)[64] = Primitive::TupleGetItem{prim_type=1}(%78, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10425
-    %81 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10426(%80, Tensor(43)[])    #(Tensor(F32)[64], Tensor(F32)[])    # fg_10426=▶Mul.10426 #scope: Default
-      # In file /home/dzp/dzp_is_sb/mindrl/mindrl/policy/modelfree/dqn.py(206)/                loss = (td_error.pow(2) * weight).mean()/#▲[CNode]10427
-    %82 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%81, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10428
-    %83 : $(▶80116_forward_fn.10315):Tensor(F32)[64] = Primitive::TupleGetItem{prim_type=1}(%81, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10429
-    %84 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10430(%83, ())    #(Tensor(F32)[64], Tuple[])    # fg_10430=▶ReduceMean.10430 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/_extends/parse/standard_method.py(83)/    return reduce_mean(x, axis)/#▲[CNode]10431
-    %85 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%84, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10432
-    %86 : $(▶80116_forward_fn.10315):Tensor(F32)[] = Primitive::TupleGetItem{prim_type=1}(%84, I64(0))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10433
-    %87 : $(▶80116_forward_fn.10315):Tuple[Tuple[Tensor(F32)*10],Func] = MakeTupleGradient::make_tuple_gradient(%57, %44, %31, %18, %5, %10, %23, %36, %49, %62)    #(Tensor(F32)[2, 128], Tensor(F32)[128, 128], Tensor(F32)[128, 128], Tensor(F32)[128, 128], Tensor(F32)[128, 4], Tensor(F32)[128], Tensor(F32)[128], Tensor(F32)[128], Tensor(F32)[128], Tensor(F32)[2]) #scope: Default
-#▲[CNode]10434
-    %88 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32)*10] = Primitive::TupleGetItem{prim_type=1}(%87, I64(0))    #(Tuple[Tuple[Tensor(F32)*10],Func], I64) #scope: Default
-#[CNode]10435
-    %89 : $(▶80116_forward_fn.10315):Tuple[UMonad,Func] = FuncGraph::fg_10436(%para-1, %88)    #(UMonad, Tuple[Tensor(F32)*10])    # fg_10436=▶UpdateState.10436 #scope: Default
-#▲[CNode]10437
-    %90 : $(▶80116_forward_fn.10315):UMonad = Primitive::TupleGetItem{prim_type=1}(%89, I64(0))    #(Tuple[UMonad,Func], I64) #scope: Default
-#[CNode]10438
-    %91 : $(▶80116_forward_fn.10315):Tuple[UMonad,Func] = FuncGraph::fg_10439(%90, %65)    #(UMonad, Tensor(F32)[64, 2])    # fg_10439=▶UpdateState.10439 #scope: Default
-#▲[CNode]10440
-    %92 : $(▶80116_forward_fn.10315):UMonad = Primitive::TupleGetItem{prim_type=1}(%91, I64(0))    #(Tuple[UMonad,Func], I64) #scope: Default
-#[CNode]10441
-    %93 : $(▶80116_forward_fn.10315):Tuple[Tensor(F32),Func] = FuncGraph::fg_10442(%86, %92)    #(Tensor(F32)[], UMonad)    # fg_10442=▶Depend.10442 #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/functional.py(444)/        res = fn(*args)/#▲[CNode]10443
-    %94 : $(▶80116_forward_fn.10315):Func = Primitive::TupleGetItem{prim_type=1}(%93, I64(1))    #(Tuple[Tensor(F32),Func], I64) #scope: Default
-#[CNode]10444
-    %95 : Tuple[EnvType,Tensor(F32),UMonad] = %94(%para49)    #(Tensor(F32)[]) #scope: Default
-#[CNode]10445
-    %96 : Tensor(F32)[] = Primitive::TupleGetItem{prim_type=1}(%95, I64(1))    #(Tuple[EnvType,Tensor(F32),UMonad], I64) #scope: Default
-#[CNode]10446
-    %97 : Tensor(F32)[] = Primitive::RealInner{prim_type=1}(%96)    #(Tensor(F32)[]) #scope: Default
-#[CNode]10447
-    %98 : Tuple[EnvType,Tensor(F32),Tuple[]] = %85(%97)    #(Tensor(F32)[]) #scope: Default
-#[CNode]10448
-    %99 : Tensor(F32)[64] = Primitive::TupleGetItem{prim_type=1}(%98, I64(1))    #(Tuple[EnvType,Tensor(F32),Tuple[]], I64) #scope: Default
-#[CNode]10449
-    %100 : Tensor(F32)[64] = Primitive::RealInner{prim_type=1}(%99)    #(Tensor(F32)[64]) #scope: Default
-#[CNode]10450
-    %101 : Tuple[EnvType,Tensor(F32)*2] = %82(%100)    #(Tensor(F32)[64]) #scope: Default
-#[CNode]10451
-    %102 : Tensor(F32)[64] = Primitive::TupleGetItem{prim_type=1}(%101, I64(1))    #(Tuple[EnvType,Tensor(F32)*2], I64) #scope: Default
-#[CNode]10452
-    %103 : Tensor(F32)[64] = Primitive::RealInner{prim_type=1}(%102)    #(Tensor(F32)[64]) #scope: Default
-#[CNode]10453
-
-#------------------------> 1
-    %104 = %79(%103)    #(Tensor(F32)[64]) #scope: Default
-#[CNode]10454
-    %105 = Primitive::TupleGetItem{prim_type=1}(%104, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10455
-    %106 = Primitive::RealInner{prim_type=1}(%105)    #(Undefined) #scope: Default
-#[CNode]10456
-    %107 = %76(%106)    #(Undefined) #scope: Default
-#[CNode]10457
-    %108 = Primitive::TupleGetItem{prim_type=1}(%107, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10458
-    %109 = Primitive::RealInner{prim_type=1}(%108)    #(Undefined) #scope: Default
-#[CNode]10459
-    %110 = %73(%109)    #(Undefined) #scope: Default
-#[CNode]10460
-    %111 = Primitive::TupleGetItem{prim_type=1}(%110, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10461
-    %112 = Primitive::RealInner{prim_type=1}(%111)    #(Undefined) #scope: Default
-#[CNode]10462
-    %113 = %64(%112)    #(Undefined) #scope: Default
-#[CNode]10463
-    %114 = Primitive::TupleGetItem{prim_type=1}(%113, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10464
-    %115 = Primitive::RealInner{prim_type=1}(%114)    #(Undefined) #scope: Default
-#[CNode]10465
-    %116 = %59(%115)    #(Undefined) #scope: Default
-#[CNode]10466
-    %117 = Primitive::TupleGetItem{prim_type=1}(%116, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10467
-    %118 = Primitive::RealInner{prim_type=1}(%117)    #(Undefined) #scope: Default
-#[CNode]10468
-    %119 = %54(%118)    #(Undefined) #scope: Default
-#[CNode]10469
-    %120 = Primitive::TupleGetItem{prim_type=1}(%119, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10470
-    %121 = Primitive::RealInner{prim_type=1}(%120)    #(Undefined) #scope: Default
-#[CNode]10471
-    %122 = %51(%121)    #(Undefined) #scope: Default
-#[CNode]10472
-    %123 = Primitive::TupleGetItem{prim_type=1}(%122, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10473
-    %124 = Primitive::RealInner{prim_type=1}(%123)    #(Undefined) #scope: Default
-#[CNode]10474
-    %125 = %46(%124)    #(Undefined) #scope: Default
-#[CNode]10475
-    %126 = Primitive::TupleGetItem{prim_type=1}(%125, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10476
-    %127 = Primitive::RealInner{prim_type=1}(%126)    #(Undefined) #scope: Default
-#[CNode]10477
-    %128 = %41(%127)    #(Undefined) #scope: Default
-#[CNode]10478
-    %129 = Primitive::TupleGetItem{prim_type=1}(%128, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10479
-    %130 = Primitive::RealInner{prim_type=1}(%129)    #(Undefined) #scope: Default
-#[CNode]10480
-    %131 = %38(%130)    #(Undefined) #scope: Default
-#[CNode]10481
-    %132 = Primitive::TupleGetItem{prim_type=1}(%131, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10482
-    %133 = Primitive::RealInner{prim_type=1}(%132)    #(Undefined) #scope: Default
-#[CNode]10483
-    %134 = %33(%133)    #(Undefined) #scope: Default
-#[CNode]10484
-    %135 = Primitive::TupleGetItem{prim_type=1}(%134, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10485
-    %136 = Primitive::RealInner{prim_type=1}(%135)    #(Undefined) #scope: Default
-#[CNode]10486
-    %137 = %28(%136)    #(Undefined) #scope: Default
-#[CNode]10487
-    %138 = Primitive::TupleGetItem{prim_type=1}(%137, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10488
-    %139 = Primitive::RealInner{prim_type=1}(%138)    #(Undefined) #scope: Default
-#[CNode]10489
-    %140 = %25(%139)    #(Undefined) #scope: Default
-#[CNode]10490
-    %141 = Primitive::TupleGetItem{prim_type=1}(%140, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10491
-    %142 = Primitive::RealInner{prim_type=1}(%141)    #(Undefined) #scope: Default
-#[CNode]10492
-    %143 = %20(%142)    #(Undefined) #scope: Default
-#[CNode]10493
-    %144 = Primitive::TupleGetItem{prim_type=1}(%143, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10494
-    %145 = Primitive::RealInner{prim_type=1}(%144)    #(Undefined) #scope: Default
-#[CNode]10495
-    %146 = %15(%145)    #(Undefined) #scope: Default
-#[CNode]10496
-    %147 = Primitive::TupleGetItem{prim_type=1}(%146, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10497
-    %148 = Primitive::RealInner{prim_type=1}(%147)    #(Undefined) #scope: Default
-#[CNode]10498
-    %149 = %12(%148)    #(Undefined) #scope: Default
-#[CNode]10499
-    %150 = Primitive::TupleGetItem{prim_type=1}(%149, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10500
-    %151 = Primitive::RealInner{prim_type=1}(%150)    #(Undefined) #scope: Default
-#[CNode]10501
-    %152 = %7(%151)    #(Undefined) #scope: Default
-#[CNode]10502
-    %153 = Primitive::TupleGetItem{prim_type=1}(%152, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10503
-    %154 = Primitive::RealInner{prim_type=1}(%153)    #(Undefined) #scope: Default
-#[CNode]10504
-    %155 = %4(%154)    #(Undefined) #scope: Default
-#[CNode]10505
-    %156 = Primitive::TupleGetItem{prim_type=1}(%155, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10506
-    %157 = Primitive::RealInner{prim_type=1}(%156)    #(Undefined) #scope: Default
-#[CNode]10507
-    %158 = Primitive::EnvironSet{prim_type=1}(%1, %2, %157)    #(EnvType, SymType, Undefined) #scope: Default
-#[CNode]10508
-    %159 = Primitive::embed{prim_type=1}(%para8)    #(Ref[Tensor(F32)][128]) #scope: Default
-#[CNode]10509
-    %160 = $(▶80116_forward_fn.10315):Primitive::TupleGetItem{prim_type=1}(%9, I64(1))    #(Tuple[Tensor(F32),Func], Undefined) #scope: Default
-#[CNode]10510
-    %161 = Primitive::TupleGetItem{prim_type=1}(%149, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10511
-    %162 = Primitive::RealInner{prim_type=1}(%161)    #(Undefined) #scope: Default
-#[CNode]10512
-    %163 = %160(%162)    #(Undefined) #scope: Default
-#[CNode]10513
-    %164 = Primitive::TupleGetItem{prim_type=1}(%163, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10514
-    %165 = Primitive::RealInner{prim_type=1}(%164)    #(Undefined) #scope: Default
-#[CNode]10515
-    %166 = Primitive::EnvironSet{prim_type=1}(%158, %159, %165)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10516
-    %167 = Primitive::embed{prim_type=1}(%para9)    #(Ref[Tensor(F32)][128, 128]) #scope: Default
-#[CNode]10517
-    %168 = $(▶80116_forward_fn.10315):Primitive::TupleGetItem{prim_type=1}(%17, I64(1))    #(Tuple[Tensor(F32),Func], Undefined) #scope: Default
-#[CNode]10518
-    %169 = Primitive::TupleGetItem{prim_type=1}(%143, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10519
-    %170 = Primitive::RealInner{prim_type=1}(%169)    #(Undefined) #scope: Default
-#[CNode]10520
-    %171 = %168(%170)    #(Undefined) #scope: Default
-#[CNode]10521
-    %172 = Primitive::TupleGetItem{prim_type=1}(%171, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10522
-    %173 = Primitive::RealInner{prim_type=1}(%172)    #(Undefined) #scope: Default
-#[CNode]10523
-    %174 = Primitive::EnvironSet{prim_type=1}(%166, %167, %173)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10524
-    %175 = Primitive::embed{prim_type=1}(%para10)    #(Ref[Tensor(F32)][128]) #scope: Default
-#[CNode]10525
-    %176 = $(▶80116_forward_fn.10315):Primitive::TupleGetItem{prim_type=1}(%22, I64(1))    #(Tuple[Tensor(F32),Func], Undefined) #scope: Default
-#[CNode]10526
-    %177 = Primitive::TupleGetItem{prim_type=1}(%140, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10527
-    %178 = Primitive::RealInner{prim_type=1}(%177)    #(Undefined) #scope: Default
-#[CNode]10528
-    %179 = %176(%178)    #(Undefined) #scope: Default
-#[CNode]10529
-    %180 = Primitive::TupleGetItem{prim_type=1}(%179, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10530
-    %181 = Primitive::RealInner{prim_type=1}(%180)    #(Undefined) #scope: Default
-#[CNode]10531
-    %182 = Primitive::EnvironSet{prim_type=1}(%174, %175, %181)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10532
-    %183 = Primitive::embed{prim_type=1}(%para11)    #(Ref[Tensor(F32)][128, 128]) #scope: Default
-#[CNode]10533
-    %184 = $(▶80116_forward_fn.10315):Primitive::TupleGetItem{prim_type=1}(%30, I64(1))    #(Tuple[Tensor(F32),Func], Undefined) #scope: Default
-#[CNode]10534
-    %185 = Primitive::TupleGetItem{prim_type=1}(%134, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10535
-    %186 = Primitive::RealInner{prim_type=1}(%185)    #(Undefined) #scope: Default
-#[CNode]10536
-    %187 = %184(%186)    #(Undefined) #scope: Default
-#[CNode]10537
-    %188 = Primitive::TupleGetItem{prim_type=1}(%187, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10538
-    %189 = Primitive::RealInner{prim_type=1}(%188)    #(Undefined) #scope: Default
-#[CNode]10539
-    %190 = Primitive::EnvironSet{prim_type=1}(%182, %183, %189)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10540
-    %191 = Primitive::embed{prim_type=1}(%para12)    #(Ref[Tensor(F32)][128]) #scope: Default
-#[CNode]10541
-    %192 = $(▶80116_forward_fn.10315):Primitive::TupleGetItem{prim_type=1}(%35, I64(1))    #(Tuple[Tensor(F32),Func], Undefined) #scope: Default
-#[CNode]10542
-    %193 = Primitive::TupleGetItem{prim_type=1}(%131, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10543
-    %194 = Primitive::RealInner{prim_type=1}(%193)    #(Undefined) #scope: Default
-#[CNode]10544
-    %195 = %192(%194)    #(Undefined) #scope: Default
-#[CNode]10545
-    %196 = Primitive::TupleGetItem{prim_type=1}(%195, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10546
-    %197 = Primitive::RealInner{prim_type=1}(%196)    #(Undefined) #scope: Default
-#[CNode]10547
-    %198 = Primitive::EnvironSet{prim_type=1}(%190, %191, %197)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10548
-    %199 = Primitive::embed{prim_type=1}(%para13)    #(Ref[Tensor(F32)][128, 128]) #scope: Default
-#[CNode]10549
-    %200 = $(▶80116_forward_fn.10315):Primitive::TupleGetItem{prim_type=1}(%43, I64(1))    #(Tuple[Tensor(F32),Func], Undefined) #scope: Default
-#[CNode]10550
-    %201 = Primitive::TupleGetItem{prim_type=1}(%125, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10551
-    %202 = Primitive::RealInner{prim_type=1}(%201)    #(Undefined) #scope: Default
-#[CNode]10552
-    %203 = %200(%202)    #(Undefined) #scope: Default
-#[CNode]10553
-    %204 = Primitive::TupleGetItem{prim_type=1}(%203, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10554
-    %205 = Primitive::RealInner{prim_type=1}(%204)    #(Undefined) #scope: Default
-#[CNode]10555
-    %206 = Primitive::EnvironSet{prim_type=1}(%198, %199, %205)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10556
-    %207 = Primitive::embed{prim_type=1}(%para14)    #(Ref[Tensor(F32)][128]) #scope: Default
-#[CNode]10557
-    %208 = $(▶80116_forward_fn.10315):Primitive::TupleGetItem{prim_type=1}(%48, I64(1))    #(Tuple[Tensor(F32),Func], Undefined) #scope: Default
-#[CNode]10558
-    %209 = Primitive::TupleGetItem{prim_type=1}(%122, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10559
-    %210 = Primitive::RealInner{prim_type=1}(%209)    #(Undefined) #scope: Default
-#[CNode]10560
-    %211 = %208(%210)    #(Undefined) #scope: Default
-#[CNode]10561
-    %212 = Primitive::TupleGetItem{prim_type=1}(%211, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10562
-    %213 = Primitive::RealInner{prim_type=1}(%212)    #(Undefined) #scope: Default
-#[CNode]10563
-    %214 = Primitive::EnvironSet{prim_type=1}(%206, %207, %213)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10564
-    %215 = Primitive::embed{prim_type=1}(%para15)    #(Ref[Tensor(F32)][2, 128]) #scope: Default
-#[CNode]10565
-    %216 = $(▶80116_forward_fn.10315):Primitive::TupleGetItem{prim_type=1}(%56, I64(1))    #(Tuple[Tensor(F32),Func], Undefined) #scope: Default
-#[CNode]10566
-    %217 = Primitive::TupleGetItem{prim_type=1}(%116, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10567
-    %218 = Primitive::RealInner{prim_type=1}(%217)    #(Undefined) #scope: Default
-#[CNode]10568
-    %219 = %216(%218)    #(Undefined) #scope: Default
-#[CNode]10569
-    %220 = Primitive::TupleGetItem{prim_type=1}(%219, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10570
-    %221 = Primitive::RealInner{prim_type=1}(%220)    #(Undefined) #scope: Default
-#[CNode]10571
-    %222 = Primitive::EnvironSet{prim_type=1}(%214, %215, %221)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10572
-    %223 = Primitive::embed{prim_type=1}(%para16)    #(Ref[Tensor(F32)][2]) #scope: Default
-#[CNode]10573
-    %224 = $(▶80116_forward_fn.10315):Primitive::TupleGetItem{prim_type=1}(%61, I64(1))    #(Tuple[Tensor(F32),Func], Undefined) #scope: Default
-#[CNode]10574
-    %225 = Primitive::TupleGetItem{prim_type=1}(%113, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10575
-    %226 = Primitive::RealInner{prim_type=1}(%225)    #(Undefined) #scope: Default
-#[CNode]10576
-    %227 = %224(%226)    #(Undefined) #scope: Default
-#[CNode]10577
-    %228 = Primitive::TupleGetItem{prim_type=1}(%227, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10578
-    %229 = Primitive::RealInner{prim_type=1}(%228)    #(Undefined) #scope: Default
-#[CNode]10579
-    %230 = Primitive::EnvironSet{prim_type=1}(%222, %223, %229)    #(Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10580
-    %231 = $(▶80116_forward_fn.10315):Primitive::TupleGetItem{prim_type=1}(%66, I64(1))    #(Tuple[Tensor(I64),Func], Undefined) #scope: Default
-#[CNode]10581
-    %232 = $(▶80116_forward_fn.10315):Primitive::TupleGetItem{prim_type=1}(%68, I64(1))    #(Tuple[List[Tensor(I64)*2],Func], Undefined) #scope: Default
-#[CNode]10582
-    %233 = $(▶80116_forward_fn.10315):Primitive::TupleGetItem{prim_type=1}(%70, I64(1))    #(Tuple[Tensor(I64),Func], Undefined) #scope: Default
-#[CNode]10583
-    %234 = Primitive::TupleGetItem{prim_type=1}(%110, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10584
-    %235 = Primitive::RealInner{prim_type=1}(%234)    #(Undefined) #scope: Default
-#[CNode]10585
-    %236 = %233(%235)    #(Undefined) #scope: Default
-#[CNode]10586
-    %237 = Primitive::TupleGetItem{prim_type=1}(%236, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10587
-    %238 = %232(%237)    #(Undefined) #scope: Default
-#[CNode]10588
-    %239 = Primitive::TupleGetItem{prim_type=1}(%238, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10589
-    %240 = Primitive::RealInner{prim_type=1}(%239)    #(Undefined) #scope: Default
-#[CNode]10590
-    %241 = %231(%240)    #(Undefined) #scope: Default
-#[CNode]10591
-    %242 = Primitive::TupleGetItem{prim_type=1}(%241, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10592
-    %243 = Primitive::RealInner{prim_type=1}(%242)    #(Undefined) #scope: Default
-#[CNode]10593
-    %244 = Primitive::TupleGetItem{prim_type=1}(%107, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10594
-    %245 = Primitive::RealInner{prim_type=1}(%244)    #(Undefined) #scope: Default
-#[CNode]10595
-    %246 = Primitive::TupleGetItem{prim_type=1}(%152, I64(1))    #(Undefined, Undefined) #scope: Default
-#[CNode]10596
-    %247 = Primitive::RealInner{prim_type=1}(%246)    #(Undefined) #scope: Default
-#[CNode]10597
-    %248 = Primitive::TupleGetItem{prim_type=1}(%155, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10598
-    %249 = Primitive::TupleGetItem{prim_type=1}(%163, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10599
-    %250 = HyperMapPy::hyper_map[add_backward]{fn_leaf=MultitypeFuncGraph::add_backward{(CSRTensor, CSRTensor), (RowTensor, Tensor), (IOMonad, IOMonad), (NoneType, NoneType), (UMonad, UMonad), (Tensor, Tensor), (COOTensor, COOTensor), (EnvType, EnvType), (Number, Number)}}(%248, %249)    #(Undefined, Undefined) #scope: Gradients/Default
-#[CNode]10600
-    %251 = Primitive::TupleGetItem{prim_type=1}(%171, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10601
-    %252 = HyperMapPy::hyper_map[add_backward]{fn_leaf=MultitypeFuncGraph::add_backward{(CSRTensor, CSRTensor), (RowTensor, Tensor), (IOMonad, IOMonad), (NoneType, NoneType), (UMonad, UMonad), (Tensor, Tensor), (COOTensor, COOTensor), (EnvType, EnvType), (Number, Number)}}(%250, %251)    #(Undefined, Undefined) #scope: Gradients/Default
-#[CNode]10602
-    %253 = Primitive::TupleGetItem{prim_type=1}(%179, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10603
-    %254 = HyperMapPy::hyper_map[add_backward]{fn_leaf=MultitypeFuncGraph::add_backward{(CSRTensor, CSRTensor), (RowTensor, Tensor), (IOMonad, IOMonad), (NoneType, NoneType), (UMonad, UMonad), (Tensor, Tensor), (COOTensor, COOTensor), (EnvType, EnvType), (Number, Number)}}(%252, %253)    #(Undefined, Undefined) #scope: Gradients/Default
-#[CNode]10604
-    %255 = Primitive::TupleGetItem{prim_type=1}(%187, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10605
-    %256 = HyperMapPy::hyper_map[add_backward]{fn_leaf=MultitypeFuncGraph::add_backward{(CSRTensor, CSRTensor), (RowTensor, Tensor), (IOMonad, IOMonad), (NoneType, NoneType), (UMonad, UMonad), (Tensor, Tensor), (COOTensor, COOTensor), (EnvType, EnvType), (Number, Number)}}(%254, %255)    #(Undefined, Undefined) #scope: Gradients/Default
-#[CNode]10606
-    %257 = Primitive::TupleGetItem{prim_type=1}(%195, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10607
-    %258 = HyperMapPy::hyper_map[add_backward]{fn_leaf=MultitypeFuncGraph::add_backward{(CSRTensor, CSRTensor), (RowTensor, Tensor), (IOMonad, IOMonad), (NoneType, NoneType), (UMonad, UMonad), (Tensor, Tensor), (COOTensor, COOTensor), (EnvType, EnvType), (Number, Number)}}(%256, %257)    #(Undefined, Undefined) #scope: Gradients/Default
-#[CNode]10608
-    %259 = Primitive::TupleGetItem{prim_type=1}(%203, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10609
-    %260 = HyperMapPy::hyper_map[add_backward]{fn_leaf=MultitypeFuncGraph::add_backward{(CSRTensor, CSRTensor), (RowTensor, Tensor), (IOMonad, IOMonad), (NoneType, NoneType), (UMonad, UMonad), (Tensor, Tensor), (COOTensor, COOTensor), (EnvType, EnvType), (Number, Number)}}(%258, %259)    #(Undefined, Undefined) #scope: Gradients/Default
-#[CNode]10610
-    %261 = Primitive::TupleGetItem{prim_type=1}(%211, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10611
-    %262 = HyperMapPy::hyper_map[add_backward]{fn_leaf=MultitypeFuncGraph::add_backward{(CSRTensor, CSRTensor), (RowTensor, Tensor), (IOMonad, IOMonad), (NoneType, NoneType), (UMonad, UMonad), (Tensor, Tensor), (COOTensor, COOTensor), (EnvType, EnvType), (Number, Number)}}(%260, %261)    #(Undefined, Undefined) #scope: Gradients/Default
-#[CNode]10612
-    %263 = Primitive::TupleGetItem{prim_type=1}(%219, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10613
-    %264 = HyperMapPy::hyper_map[add_backward]{fn_leaf=MultitypeFuncGraph::add_backward{(CSRTensor, CSRTensor), (RowTensor, Tensor), (IOMonad, IOMonad), (NoneType, NoneType), (UMonad, UMonad), (Tensor, Tensor), (COOTensor, COOTensor), (EnvType, EnvType), (Number, Number)}}(%262, %263)    #(Undefined, Undefined) #scope: Gradients/Default
-#[CNode]10614
-    %265 = Primitive::TupleGetItem{prim_type=1}(%227, I64(2))    #(Undefined, Undefined) #scope: Default
-#[CNode]10615
-    %266 = HyperMapPy::hyper_map[add_backward]{fn_leaf=MultitypeFuncGraph::add_backward{(CSRTensor, CSRTensor), (RowTensor, Tensor), (IOMonad, IOMonad), (NoneType, NoneType), (UMonad, UMonad), (Tensor, Tensor), (COOTensor, COOTensor), (EnvType, EnvType), (Number, Number)}}(%264, %265)    #(Undefined, Undefined) #scope: Gradients/Default
-#[CNode]10616
-    %267 = Primitive::MakeTuple{prim_type=1}(%230, %243, %245, %247, %266)    #(Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
-#[CNode]10617
-    Primitive::Return{prim_type=1}(%267)    #(Undefined) #scope: Default
-#[CNode]10618
-}
-# order:
-#   1: ◀80116_forward_fn.10311:[CNode]10619{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10620}
-#   2: ◀80116_forward_fn.10311:[CNode]10621{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10441}
-#   3: ◀80116_forward_fn.10311:[CNode]10622{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10438}
-#   4: ◀80116_forward_fn.10311:[CNode]10623{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10435}
-#   5: ◀80116_forward_fn.10311:[CNode]10624{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10433}
-#   6: ◀80116_forward_fn.10311:[CNode]10625{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10429}
-#   7: ◀80116_forward_fn.10311:[CNode]10626{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10425}
-#   8: ◀80116_forward_fn.10311:[CNode]10627{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10421}
-#   9: ◀80116_forward_fn.10311:[CNode]10628{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10418}
-#  10: ◀80116_forward_fn.10311:[CNode]10629{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10414}
-#  11: ◀80116_forward_fn.10311:[CNode]10630{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10412}
-#  12: ◀80116_forward_fn.10311:[CNode]10631{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10410}
-#  13: ◀80116_forward_fn.10311:[CNode]10632{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10408}
-#  14: ◀80116_forward_fn.10311:[CNode]10633{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10405}
-#  15: ◀80116_forward_fn.10311:[CNode]10634{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10402}
-#  16: ◀80116_forward_fn.10311:[CNode]10635{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10399}
-#  17: ◀80116_forward_fn.10311:[CNode]10636{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10396}
-#  18: ◀80116_forward_fn.10311:[CNode]10637{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10392}
-#  19: ◀80116_forward_fn.10311:[CNode]10638{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10390}
-#  20: ◀80116_forward_fn.10311:[CNode]10639{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10389}
-#  21: ◀80116_forward_fn.10311:[CNode]10640{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10387}
-#  22: ◀80116_forward_fn.10311:[CNode]10641{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10386}
-#  23: ◀80116_forward_fn.10311:[CNode]10642{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10382}
-#  24: ◀80116_forward_fn.10311:[CNode]10643{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10380}
-#  25: ◀80116_forward_fn.10311:[CNode]10644{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10379}
-#  26: ◀80116_forward_fn.10311:[CNode]10645{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10377}
-#  27: ◀80116_forward_fn.10311:[CNode]10646{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10376}
-#  28: ◀80116_forward_fn.10311:[CNode]10647{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10372}
-#  29: ◀80116_forward_fn.10311:[CNode]10648{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10370}
-#  30: ◀80116_forward_fn.10311:[CNode]10649{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10367}
-#  31: ◀80116_forward_fn.10311:[CNode]10650{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10365}
-#  32: ◀80116_forward_fn.10311:[CNode]10651{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10362}
-#  33: ◀80116_forward_fn.10311:[CNode]10652{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10358}
-#  34: ◀80116_forward_fn.10311:[CNode]10653{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10355}
-#  35: ◀80116_forward_fn.10311:[CNode]10654{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10352}
-#  36: ◀80116_forward_fn.10311:[CNode]10655{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: [CNode]10349}
-#  37: ◀80116_forward_fn.10311:[CNode]10656{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<MakeTupleGradient> make_tuple_gradient.10657}
-#  38: ◀80116_forward_fn.10311:[CNode]10658{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶UpdateState.10436}
-#  39: ◀80116_forward_fn.10311:[CNode]10659{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶UpdateState.10439}
-#  40: ◀80116_forward_fn.10311:[CNode]10660{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶Load.10403}
-#  41: ◀80116_forward_fn.10311:[CNode]10661{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶BiasAdd.10406}
-#  42: ◀80116_forward_fn.10311:[CNode]10662{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶Load.10397}
-#  43: ◀80116_forward_fn.10311:[CNode]10663{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶MatMul.10400}
-#  44: ◀80116_forward_fn.10311:[CNode]10664{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶BiasAdd.10310}
-#  45: ◀80116_forward_fn.10311:[CNode]10665{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶Load.10368}
-#  46: ◀80116_forward_fn.10311:[CNode]10666{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶Load.10363}
-#  47: ◀80116_forward_fn.10311:[CNode]10667{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶MatMul.10309}
-#  48: ◀80116_forward_fn.10311:[CNode]10668{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶Load.10353}
-#  49: ◀80116_forward_fn.10311:[CNode]10669{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶BiasAdd.10356}
-#  50: ◀80116_forward_fn.10311:[CNode]10670{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶Load.10346}
-#  51: ◀80116_forward_fn.10311:[CNode]10671{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶MatMul.10350}
-#  52: ◀80116_forward_fn.10311:[CNode]10672{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<Int> Int64}
-#  53: ◀80116_forward_fn.10311:[CNode]10673{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶Cast.10409}
-#  54: ◀80116_forward_fn.10311:[CNode]10674{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<Tensor> Tensor(shape=[64], dtype=Int64, value=[...])}
-#  55: ◀80116_forward_fn.10311:[CNode]10675{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<MakeListGradient> make_list_gradient.10676}
-#  56: ◀80116_forward_fn.10311:[CNode]10677{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶ReLU.10393}
-#  57: ◀80116_forward_fn.10311:[CNode]10678{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶GatherNd.10415}
-#  58: ◀80116_forward_fn.10311:[CNode]10679{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶Stack.10413}
-#  59: ◀80116_forward_fn.10311:[CNode]10680{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶ReLU.10383}
-#  60: ◀80116_forward_fn.10311:[CNode]10681{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶ReLU.10373}
-#  61: ◀80116_forward_fn.10311:[CNode]10682{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶ReLU.10359}
-#  62: ◀80116_forward_fn.10311:[CNode]10683{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<Tensor> Tensor(shape=[], dtype=Float32, value=2)}
-#  63: ◀80116_forward_fn.10311:[CNode]10684{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶Pow.10422}
-#  64: ◀80116_forward_fn.10311:[CNode]10685{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<Tensor> Tensor(shape=[], dtype=Float32, value=1)}
-#  65: ◀80116_forward_fn.10311:[CNode]10686{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶Mul.10426}
-#  66: ◀80116_forward_fn.10311:[CNode]10687{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶Sub.10419}
-#  67: ◀80116_forward_fn.10311:[CNode]10688{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<ValueTuple> ()}
-#  68: ◀80116_forward_fn.10311:[CNode]10689{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶ReduceMean.10430}
-#  69: ◀80116_forward_fn.10311:[CNode]10690{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ValueNode<FuncGraph> ▶Depend.10442}
-#  70: ◀80116_forward_fn.10311:[CNode]10691{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ▶u}
-#  71: ◀80116_forward_fn.10311:[CNode]10692{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ▶obs_next}
-#  72: ◀80116_forward_fn.10311:[CNode]10693{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ▶returns}
-#  73: ◀80116_forward_fn.10311:[CNode]10694{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: ▶act}
-#  74: ◀80116_forward_fn.10311:[CNode]10695{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: model.model.model.8.bias}
-#  75: ◀80116_forward_fn.10311:[CNode]10696{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: model.model.model.8.weight}
-#  76: ◀80116_forward_fn.10311:[CNode]10697{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: model.model.model.6.bias}
-#  77: ◀80116_forward_fn.10311:[CNode]10698{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: model.model.model.6.weight}
-#  78: ◀80116_forward_fn.10311:[CNode]10699{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: model.model.model.4.bias}
-#  79: ◀80116_forward_fn.10311:[CNode]10700{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: model.model.model.4.weight}
-#  80: ◀80116_forward_fn.10311:[CNode]10701{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: model.model.model.2.bias}
-#  81: ◀80116_forward_fn.10311:[CNode]10702{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: model.model.model.2.weight}
-#  82: ◀80116_forward_fn.10311:[CNode]10703{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: model.model.model.0.bias}
-#  83: ◀80116_forward_fn.10311:[CNode]10704{[0]: ValueNode<HyperMapPy> hyper_map[zeros_like_leaf].41, [1]: model.model.model.0.weight}
-#  84: ◀80116_forward_fn.10311:[CNode]10618{[0]: ValueNode<Primitive> Return, [1]: [CNode]10617}
-
-
-# [No.3] ◀Pow.10313
-# In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(699)/    def bprop(x, power, out, dout):/
-funcgraph fg_10313[fg_10422](
-        %para50 : Tensor(F32)[64]    # ∇out
-    ) {
-    %1 : EnvType = Primitive::EnvironCreate{prim_type=1}() #scope: Default
-#10705
-    %2 : Tuple[EnvType] = Primitive::MakeTuple{prim_type=1}(%1)    #(EnvType) #scope: Default
-#10706
-    %3 : Tensor(Bool)[64] = DoSignaturePrimitive::S-Prim-less{prim_type=1}(%para-1, I64(0))    #(Tensor(F32)[64], I64) #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(701)/        x = F.select(x < 0, F.fill(F.dtype(x), F.shape(x), 1), x)/#[CNode]10707
-    %4 : TypeType = DoSignaturePrimitive::S-Prim-DType{prim_type=1}(%para-1)    #(Tensor(F32)[64]) #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(701)/        x = F.select(x < 0, F.fill(F.dtype(x), F.shape(x), 1), x)/#[CNode]10708
-    %5 : Tuple[I64] = FuncGraph::fg_10709(%para-1)    #(Tensor(F32)[64])    # fg_10709=shape.10709 #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(701)/        x = F.select(x < 0, F.fill(F.dtype(x), F.shape(x), 1), x)/#[CNode]10710
-    %6 : Tensor(F32)[64] = FuncGraph::fg_10711(%4, %5, I64(1))    #(TypeType, Tuple[I64], I64)    # fg_10711=fill.10711 #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(701)/        x = F.select(x < 0, F.fill(F.dtype(x), F.shape(x), 1), x)/#[CNode]10712
-    %7 : Tensor(F32)[64] = FuncGraph::fg_10713(%3, %6, %para-1)    #(Tensor(Bool)[64], Tensor(F32)[64], Tensor(F32)[64])    # fg_10713=select.10713 #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(701)/        x = F.select(x < 0, F.fill(F.dtype(x), F.shape(x), 1), x)/#x
-
-#------------------------> 2
-    %8 = DoSignaturePrimitive::S-Prim-sub{prim_type=1}(%para-1, F32(1))    #(Tensor(F32)[], F32) #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(700)/        bc_dx = power * pow_op(x, power - 1.0) * dout/#[CNode]10714
-    %9 = DoSignaturePrimitive::S-Prim-Pow{prim_type=1}[output_names=["y"], input_names=["x1", "x2"]](%para-1, %8)    #(Tensor(F32)[64], Undefined) #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(700)/        bc_dx = power * pow_op(x, power - 1.0) * dout/#[CNode]10715
-    %10 = DoSignaturePrimitive::S-Prim-mul{prim_type=1}(%para-1, %9)    #(Tensor(F32)[], Undefined) #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(700)/        bc_dx = power * pow_op(x, power - 1.0) * dout/#[CNode]10716
-    %11 = DoSignaturePrimitive::S-Prim-mul{prim_type=1}(%10, %para50)    #(Undefined, Tensor(F32)[64]) #scope: Gradients/Default/gradPow
+    %2 = PrimitivePy::MatMul{prim_type=4}[output_names=["output"], transpose_a=Bool(0), input_names=["x1", "x2"], transpose_x2=Bool(1), transpose_x1=Bool(0), transpose_b=Bool(1)](%para4, %1)    #(Tensor(F32)[64, 4], Tensor(F32)[128, 4]) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(462)/        x = self.matmul(x, self.weight)/#equivx
+    %3 = Primitive::Load{prim_type=1}(%para8, UMonad[U])    #(Ref[Tensor(F32)][128], UMonad) #scope: Default
+#equiv[CNode]40937
+    %4 = PrimitivePy::BiasAdd{prim_type=1}[output_names=["output"], format="NCHW", input_names=["x", "b"]](%2, %3)    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(464)/            x = self.bias_add(x, self.bias)/#equivx
+    %5 = PrimitivePy::ReLU{prim_type=1}[output_names=["output"], input_names=["x"]](%4)    #(Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/activation.py(362)/        return self.relu(x)/#equiv[CNode]40938
+    %6 = Primitive::Load{prim_type=1}(%para9, UMonad[U])    #(Ref[Tensor(F32)][128, 128], UMonad) #scope: Default
+#equiv[CNode]40939
+    %7 = PrimitivePy::MatMul{prim_type=4}[output_names=["output"], transpose_a=Bool(0), input_names=["x1", "x2"], transpose_x2=Bool(1), transpose_x1=Bool(0), transpose_b=Bool(1)](%5, %6)    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(462)/        x = self.matmul(x, self.weight)/#equivx
+    %8 = Primitive::Load{prim_type=1}(%para10, UMonad[U])    #(Ref[Tensor(F32)][128], UMonad) #scope: Default
+#equiv[CNode]40940
+    %9 = PrimitivePy::BiasAdd{prim_type=1}[output_names=["output"], format="NCHW", input_names=["x", "b"]](%7, %8)    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(464)/            x = self.bias_add(x, self.bias)/#equivx
+    %10 = PrimitivePy::ReLU{prim_type=1}[output_names=["output"], input_names=["x"]](%9)    #(Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/activation.py(362)/        return self.relu(x)/#equiv[CNode]40941
+    %11 = Primitive::Load{prim_type=1}(%para11, UMonad[U])    #(Ref[Tensor(F32)][128, 128], UMonad) #scope: Default
+#equiv[CNode]40939
+    %12 = PrimitivePy::MatMul{prim_type=4}[output_names=["output"], transpose_a=Bool(0), input_names=["x1", "x2"], transpose_x2=Bool(1), transpose_x1=Bool(0), transpose_b=Bool(1)](%10, %11)    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(462)/        x = self.matmul(x, self.weight)/#equivx
+    %13 = Primitive::Load{prim_type=1}(%para12, UMonad[U])    #(Ref[Tensor(F32)][128], UMonad) #scope: Default
+#equiv[CNode]40940
+    %14 = PrimitivePy::BiasAdd{prim_type=1}[output_names=["output"], format="NCHW", input_names=["x", "b"]](%12, %13)    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(464)/            x = self.bias_add(x, self.bias)/#equivx
+    %15 = PrimitivePy::ReLU{prim_type=1}[output_names=["output"], input_names=["x"]](%14)    #(Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/activation.py(362)/        return self.relu(x)/#equiv[CNode]40942
+    %16 = Primitive::Load{prim_type=1}(%para13, UMonad[U])    #(Ref[Tensor(F32)][128, 128], UMonad) #scope: Default
+#equiv[CNode]40939
+    %17 = PrimitivePy::MatMul{prim_type=4}[output_names=["output"], transpose_a=Bool(0), input_names=["x1", "x2"], transpose_x2=Bool(1), transpose_x1=Bool(0), transpose_b=Bool(1)](%15, %16)    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(462)/        x = self.matmul(x, self.weight)/#equivx
+    %18 = Primitive::Load{prim_type=1}(%para14, UMonad[U])    #(Ref[Tensor(F32)][128], UMonad) #scope: Default
+#equiv[CNode]40940
+    %19 = PrimitivePy::BiasAdd{prim_type=1}[output_names=["output"], format="NCHW", input_names=["x", "b"]](%17, %18)    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(464)/            x = self.bias_add(x, self.bias)/#equivx
+    %20 = PrimitivePy::ReLU{prim_type=1}[output_names=["output"], input_names=["x"]](%19)    #(Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/activation.py(362)/        return self.relu(x)/#equiv[CNode]40943
+    %21 = Primitive::Load{prim_type=1}(%para15, UMonad[U])    #(Ref[Tensor(F32)][2, 128], UMonad) #scope: Default
+#equiv40944
+    %22 = PrimitivePy::MatMul{prim_type=4}[output_names=["output"], transpose_a=Bool(0), input_names=["x1", "x2"], transpose_x2=Bool(1), transpose_x1=Bool(0), transpose_b=Bool(1)](%20, %21)    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(462)/        x = self.matmul(x, self.weight)/#equivx
+    %23 = Primitive::Load{prim_type=1}(%para16, UMonad[U])    #(Ref[Tensor(F32)][2], UMonad) #scope: Default
+#equiv40945
+    %24 = PrimitivePy::BiasAdd{prim_type=1}[output_names=["output"], format="NCHW", input_names=["x", "b"]](%22, %23)    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/layer/basic.py(464)/            x = self.bias_add(x, self.bias)/#equivx
+    %25 = PrimitivePy::Cast{prim_type=2}[output_names=["output"], input_names=["x", "dst_type"], SrcT=I32, DstT=I64, dst_type=I64](%para2, I64)    #(Tensor(I32)[64], Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/composite/multitype_ops/_compile_utils.py(631)/            tensor_index = F.cast(index, mstype.int64)/#equivtensor_index
+    %26 = Primitive::make_list{prim_type=1}(Tensor(35)[64], %25)    #(Undefined, Undefined) #scope: Default
+#40946
+    %27 = PrimitivePy::Stack{prim_type=2}[output_names=["y"], dyn_input_sizes=(I64(2)), input_names=["x"], num=I64(2), axis=I64(-1), N=I64(2)](%26)    #(Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/composite/multitype_ops/_compile_utils.py(663)/    indices = stack(final_index_tensors)/#equivindices
+    %28 = PrimitivePy::GatherNd{prim_type=1}[output_names=["y"], input_names=["input_x", "indices"]](%24, %27)    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/function/array_func.py(2461)/    return gather_nd_(input_x, indices)/#equiv[CNode]40947
+    %29 = PrimitivePy::Sub{prim_type=2}[output_names=["output"], input_names=["x", "y"]](%para3, %28)    #(Tensor(F32)[64], Undefined) #scope: Default
+      # In file /home/dzp/dzp_is_sb/mindrl/mindrl/policy/modelfree/dqn.py(199)/            td_error = returns - q/#equivtd_error
+    %30 = PrimitivePy::Pow{prim_type=1}[output_names=["y"], input_names=["x1", "x2"]](%29, Tensor(43)[])    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/function/math_func.py(644)/    return tensor_pow(x, y)/#equiv[CNode]40948
+    %31 = PrimitivePy::Mul{prim_type=2}[output_names=["output"], input_names=["x", "y"]](%30, Tensor(43)[])    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/dzp_is_sb/mindrl/mindrl/policy/modelfree/dqn.py(206)/                loss = (td_error.pow(2) * weight).mean()/#equiv[CNode]40949
+    %32 = PrimitivePy::ReduceMean{prim_type=2}[output_names=["y"], keep_dims=Bool(0), input_names=["input_x", "axis"]](%31, ())    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/_extends/parse/standard_method.py(83)/    return reduce_mean(x, axis)/#equiv[CNode]40950
+    %33 = PrimitivePy::Pow{prim_type=1}[output_names=["y"], input_names=["x1", "x2"]](%29, Tensor(43)[])    #(Undefined, Undefined) #scope: Gradients/Default/gradPow
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(700)/        bc_dx = power * pow_op(x, power - 1.0) * dout/#[CNode]40951
+    %34 = PrimitivePy::Mul{prim_type=2}[output_names=["output"], input_names=["x", "y"]](Tensor(43)[], %33)    #(Undefined, Undefined) #scope: Gradients/Default/gradPow
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(700)/        bc_dx = power * pow_op(x, power - 1.0) * dout/#[CNode]40952
+    %35 = PrimitivePy::Mul{prim_type=2}[output_names=["output"], input_names=["x", "y"]](%34, Tensor(43)[64])    #(Undefined, Undefined) #scope: Gradients/Default/gradPow
       # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(700)/        bc_dx = power * pow_op(x, power - 1.0) * dout/#bc_dx
-    %12 : $(▶Pow.10422):Tensor(F32)[64] = PrimitivePy::Pow{prim_type=1}[output_names=["y"], input_names=["x1", "x2"]](%para-1, %para-1)    #(Tensor(F32)[64], Tensor(F32)[]) #scope: Default
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/function/math_func.py(644)/    return tensor_pow(x, y)/#equiv[CNode]10423
-    %13 = DoSignaturePrimitive::S-Prim-Log{prim_type=1}[output_names=["y"], shift=F32(0), scale=F32(1), cust_aicpu="Log", input_names=["x"], base=F32(-1)](%7)    #(Tensor(F32)[64]) #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(702)/        bc_dpower = out * ln(x) * dout/#[CNode]10717
-    %14 = DoSignaturePrimitive::S-Prim-mul{prim_type=1}(%12, %13)    #(Tensor(F32)[64], Undefined) #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(702)/        bc_dpower = out * ln(x) * dout/#[CNode]10718
-    %15 = DoSignaturePrimitive::S-Prim-mul{prim_type=1}(%14, %para50)    #(Undefined, Tensor(F32)[64]) #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(702)/        bc_dpower = out * ln(x) * dout/#bc_dpower
-    %16 = FuncGraph::fg_10719(%7, %para-1, %11, %15)    #(Tensor(F32)[64], Tensor(F32)[], Undefined, Undefined)    # fg_10719=binop_grad_common.10719 #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(703)/        return binop_grad_common(x, power, bc_dx, bc_dpower)/#[CNode]10720
-    %17 = TupleAdd::tuple_add(%2, %16)    #(Tuple[EnvType], Undefined) #scope: Default
-#10721
-    Primitive::Return{prim_type=1}(%17)    #(Undefined) #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(703)/        return binop_grad_common(x, power, bc_dx, bc_dpower)/#[CNode]10722
+    %36 = PrimitivePy::Neg{prim_type=1}[output_names=["y"], input_names=["x"]](%35)    #(Undefined) #scope: Gradients/Default/gradSub
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(341)/        return binop_grad_common(x, y, dout, neg_func(dout))/#[CNode]40953
+    %37 = PrimitivePy::ScatterNd{prim_type=1}[output_names=["output"], input_names=["indices", "update", "shape"]](%27, %36, (I64(64), I64(2)))    #(Undefined, Undefined, Undefined) #scope: Gradients/Default/gradGatherNd
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_array_ops.py(845)/        return op(indices, dout, shp), zeros_like(indices)/#[CNode]40954
+    %38 = PrimitivePy::MatMul{prim_type=4}[output_names=["output"], transpose_a=Bool(0), input_names=["x1", "x2"], transpose_x2=Bool(0), transpose_x1=Bool(0), transpose_b=Bool(0)](%37, %21)    #(Undefined, Undefined) #scope: Gradients/Default/gradMatMul
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(253)/            dx = mul1(dout, w)/#dx
+    %39 = Primitive::ReluGrad{prim_type=1}[output_names=["output"], is_load=Bool(1), input_names=["y_backprop", "x"]](%38, %20)    #(Undefined, Undefined) #scope: Gradients/Default/gradReLU
+#dx
+    %40 = PrimitivePy::MatMul{prim_type=4}[output_names=["output"], transpose_a=Bool(0), input_names=["x1", "x2"], transpose_x2=Bool(0), transpose_x1=Bool(0), transpose_b=Bool(0)](%39, %16)    #(Undefined, Undefined) #scope: Gradients/Default/gradMatMul
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(253)/            dx = mul1(dout, w)/#dx
+    %41 = Primitive::ReluGrad{prim_type=1}[output_names=["output"], is_load=Bool(1), input_names=["y_backprop", "x"]](%40, %15)    #(Undefined, Undefined) #scope: Gradients/Default/gradReLU
+#dx
+    %42 = PrimitivePy::MatMul{prim_type=4}[output_names=["output"], transpose_a=Bool(0), input_names=["x1", "x2"], transpose_x2=Bool(0), transpose_x1=Bool(0), transpose_b=Bool(0)](%41, %11)    #(Undefined, Undefined) #scope: Gradients/Default/gradMatMul
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(253)/            dx = mul1(dout, w)/#dx
+    %43 = Primitive::ReluGrad{prim_type=1}[output_names=["output"], is_load=Bool(1), input_names=["y_backprop", "x"]](%42, %10)    #(Undefined, Undefined) #scope: Gradients/Default/gradReLU
+#dx
+    %44 = PrimitivePy::MatMul{prim_type=4}[output_names=["output"], transpose_a=Bool(0), input_names=["x1", "x2"], transpose_x2=Bool(0), transpose_x1=Bool(0), transpose_b=Bool(0)](%43, %6)    #(Undefined, Undefined) #scope: Gradients/Default/gradMatMul
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(253)/            dx = mul1(dout, w)/#dx
+    %45 = Primitive::ReluGrad{prim_type=1}[output_names=["output"], is_load=Bool(1), input_names=["y_backprop", "x"]](%44, %5)    #(Undefined, Undefined) #scope: Gradients/Default/gradReLU
+#dx
+    %46 = PrimitivePy::MatMul{prim_type=4}[output_names=["output"], transpose_a=Bool(1), input_names=["x1", "x2"], transpose_x2=Bool(0), transpose_x1=Bool(1), transpose_b=Bool(0)](%45, %para4)    #(Undefined, Tensor(F32)[64, 4]) #scope: Gradients/Default/gradMatMul
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(255)/            dw = mul2(dout, x)/#dw
+    %47 = PrimitivePy::BiasAddGrad{prim_type=1}[output_names=["output"], format="NCHW", input_names=["dout"]](%45)    #(Undefined) #scope: Gradients/Default/gradBiasAdd
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_nn_ops.py(38)/        return dout, bias_grad(dout)/#[CNode]40955
+    %48 = PrimitivePy::MatMul{prim_type=4}[output_names=["output"], transpose_a=Bool(1), input_names=["x1", "x2"], transpose_x2=Bool(0), transpose_x1=Bool(1), transpose_b=Bool(0)](%43, %5)    #(Undefined, Undefined) #scope: Gradients/Default/gradMatMul
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(255)/            dw = mul2(dout, x)/#dw
+    %49 = PrimitivePy::BiasAddGrad{prim_type=1}[output_names=["output"], format="NCHW", input_names=["dout"]](%43)    #(Undefined) #scope: Gradients/Default/gradBiasAdd
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_nn_ops.py(38)/        return dout, bias_grad(dout)/#[CNode]40955
+    %50 = PrimitivePy::MatMul{prim_type=4}[output_names=["output"], transpose_a=Bool(1), input_names=["x1", "x2"], transpose_x2=Bool(0), transpose_x1=Bool(1), transpose_b=Bool(0)](%41, %10)    #(Undefined, Undefined) #scope: Gradients/Default/gradMatMul
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(255)/            dw = mul2(dout, x)/#dw
+    %51 = PrimitivePy::BiasAddGrad{prim_type=1}[output_names=["output"], format="NCHW", input_names=["dout"]](%41)    #(Undefined) #scope: Gradients/Default/gradBiasAdd
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_nn_ops.py(38)/        return dout, bias_grad(dout)/#[CNode]40955
+    %52 = PrimitivePy::MatMul{prim_type=4}[output_names=["output"], transpose_a=Bool(1), input_names=["x1", "x2"], transpose_x2=Bool(0), transpose_x1=Bool(1), transpose_b=Bool(0)](%39, %15)    #(Undefined, Undefined) #scope: Gradients/Default/gradMatMul
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(255)/            dw = mul2(dout, x)/#dw
+    %53 = PrimitivePy::BiasAddGrad{prim_type=1}[output_names=["output"], format="NCHW", input_names=["dout"]](%39)    #(Undefined) #scope: Gradients/Default/gradBiasAdd
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_nn_ops.py(38)/        return dout, bias_grad(dout)/#[CNode]40955
+    %54 = PrimitivePy::MatMul{prim_type=4}[output_names=["output"], transpose_a=Bool(1), input_names=["x1", "x2"], transpose_x2=Bool(0), transpose_x1=Bool(1), transpose_b=Bool(0)](%37, %20)    #(Undefined, Undefined) #scope: Gradients/Default/gradMatMul
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(255)/            dw = mul2(dout, x)/#dw
+    %55 = PrimitivePy::BiasAddGrad{prim_type=1}[output_names=["output"], format="NCHW", input_names=["dout"]](%37)    #(Undefined) #scope: Gradients/Default/gradBiasAdd
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_nn_ops.py(38)/        return dout, bias_grad(dout)/#[CNode]40955
+    %56 = Primitive::MakeTuple{prim_type=1}(%46, %47, %48, %49, %50, %51, %52, %53, %54, %55)    #(Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
+#[CNode]40956
+    %57 = PrimitivePy::MakeTuple{prim_type=1}(%32, %56)    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/dzp_is_sb/mindrl/mindrl/policy/modelfree/dqn.py(215)/            return loss,grads/#[CNode]40957
+    %58 = Primitive::Load{prim_type=1}(%para5, UMonad[U])    #(Ref[Tensor(F32)][1], UMonad) #scope: Default
+#[CNode]40958
+    %59 = Primitive::MakeTuple{prim_type=1}(%23, %18, %13, %8, %3, %1, %6, %11, %16, %21, %58)    #(Undefined, Undefined, Undefined, Undefined, Undefined, Tensor(F32)[128, 4], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
+#[CNode]40959
+    %60 = Primitive::UpdateState{prim_type=1}(UMonad[U], %59)    #(UMonad, Undefined) #scope: Default
+#[CNode]40960
+    %61 = PrimitivePy::Mul{prim_type=2}[output_names=["output"], input_names=["x", "y"]](%58, Tensor(43)[])    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(543)/        beta1_power = self.beta1_power * self.beta1/#beta1_power
+    %62 = PrimitivePy::Assign{prim_type=1}[output_names=["output"], side_effect_mem=Bool(1), input_names=["ref", "value"]](%para5, %61, %60)    #(Ref[Tensor(F32)][1], Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/function/parameter_func.py(55)/    return assign_(variable, value)/#[CNode]40961
+    %63 = Primitive::UpdateState{prim_type=1}(%60, %62)    #(Undefined, Undefined) #scope: Default
+#[CNode]40962
+    %64 = Primitive::Load{prim_type=1}(%para6, %63)    #(Ref[Tensor(F32)][1], Undefined) #scope: Default
+#[CNode]40963
+    %65 = Primitive::UpdateState{prim_type=1}(%63, %64)    #(Undefined, Undefined) #scope: Default
+#[CNode]40964
+    %66 = PrimitivePy::Mul{prim_type=2}[output_names=["output"], input_names=["x", "y"]](%64, Tensor(43)[])    #(Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(545)/        beta2_power = self.beta2_power * self.beta2/#beta2_power
+    %67 = PrimitivePy::Assign{prim_type=1}[output_names=["output"], side_effect_mem=Bool(1), input_names=["ref", "value"]](%para6, %66, %65)    #(Ref[Tensor(F32)][1], Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/function/parameter_func.py(55)/    return assign_(variable, value)/#[CNode]40961
+    %68 = Primitive::UpdateState{prim_type=1}(%65, %67)    #(Undefined, Undefined) #scope: Default
+#[CNode]40962
+    %69 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para7, %para17, %para27, %61, %66, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %46, %68)    #(Ref[Tensor(F32)][128, 4], Ref[Tensor(F32)][128, 4], Ref[Tensor(F32)][128, 4], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]40965
+    %70 = Primitive::UpdateState{prim_type=1}(%68, %69)    #(Undefined, Undefined) #scope: Default
+#[CNode]40966
+    %71 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para8, %para18, %para28, %61, %66, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %47, %70)    #(Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]40965
+    %72 = Primitive::UpdateState{prim_type=1}(%70, %71)    #(Undefined, Undefined) #scope: Default
+#[CNode]40967
+    %73 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para9, %para19, %para29, %61, %66, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %48, %72)    #(Ref[Tensor(F32)][128, 128], Ref[Tensor(F32)][128, 128], Ref[Tensor(F32)][128, 128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]40965
+    %74 = Primitive::UpdateState{prim_type=1}(%72, %73)    #(Undefined, Undefined) #scope: Default
+#[CNode]40968
+    %75 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para10, %para20, %para30, %61, %66, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %49, %74)    #(Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]40965
+    %76 = Primitive::UpdateState{prim_type=1}(%74, %75)    #(Undefined, Undefined) #scope: Default
+#[CNode]40967
+    %77 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para11, %para21, %para31, %61, %66, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %50, %76)    #(Ref[Tensor(F32)][128, 128], Ref[Tensor(F32)][128, 128], Ref[Tensor(F32)][128, 128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]40965
+    %78 = Primitive::UpdateState{prim_type=1}(%76, %77)    #(Undefined, Undefined) #scope: Default
+#[CNode]40968
+    %79 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para12, %para22, %para32, %61, %66, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %51, %78)    #(Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]40965
+    %80 = Primitive::UpdateState{prim_type=1}(%78, %79)    #(Undefined, Undefined) #scope: Default
+#[CNode]40967
+    %81 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para13, %para23, %para33, %61, %66, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %52, %80)    #(Ref[Tensor(F32)][128, 128], Ref[Tensor(F32)][128, 128], Ref[Tensor(F32)][128, 128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]40965
+    %82 = Primitive::UpdateState{prim_type=1}(%80, %81)    #(Undefined, Undefined) #scope: Default
+#[CNode]40968
+    %83 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para14, %para24, %para34, %61, %66, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %53, %82)    #(Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Ref[Tensor(F32)][128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]40965
+    %84 = Primitive::UpdateState{prim_type=1}(%82, %83)    #(Undefined, Undefined) #scope: Default
+#[CNode]40967
+    %85 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para15, %para25, %para35, %61, %66, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %54, %84)    #(Ref[Tensor(F32)][2, 128], Ref[Tensor(F32)][2, 128], Ref[Tensor(F32)][2, 128], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]40965
+    %86 = Primitive::UpdateState{prim_type=1}(%84, %85)    #(Undefined, Undefined) #scope: Default
+#[CNode]40969
+    %87 = PrimitivePy::Adam{prim_type=1}[side_effect_mem=Bool(1), use_nesterov=Bool(0), use_locking=Bool(0)](%para16, %para26, %para36, %61, %66, %para47, Tensor(43)[], Tensor(43)[], Tensor(43)[], %55, %86)    #(Ref[Tensor(F32)][2], Ref[Tensor(F32)][2], Ref[Tensor(F32)][2], Undefined, Undefined, Ref[Tensor(F32)][], Undefined, Undefined, Undefined, Undefined, Undefined) #scope: Default
+      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/nn/optim/adam.py(278)/            success = F.depend(success, opt(param, moment1, moment2, beta1_power, beta2_power, lr, beta1, beta2,/#[CNode]40965
+    %88 = Primitive::UpdateState{prim_type=1}(%86, %87)    #(Undefined, Undefined) #scope: Default
+#[CNode]40970
+    %89 = Primitive::Depend{prim_type=1}[side_effect_propagate=I64(1)](%57, %88)    #(Undefined, Undefined) #scope: Default
+#[CNode]40971
+    Primitive::Return{prim_type=1}(%89)    #(Undefined) #scope: Default
+      # In file /home/dzp/dzp_is_sb/mindrl/mindrl/policy/modelfree/dqn.py(215)/            return loss,grads/#[CNode]40972
 }
-# order:
-#   1: ◀Pow.10313:[CNode]10714{[0]: ValueNode<DoSignaturePrimitive> S-Prim-sub, [1]: ▶power, [2]: ValueNode<FP32Imm> 1.000000}
-#   2: Pow.10723:[CNode]10724{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
-#   3: Pow.10723:[CNode]10725{[0]: [CNode]10724, [1]: x, [2]: [CNode]10714}
-#   4: ◀Pow.10313:[CNode]10715{[0]: ValueNode<DoSignaturePrimitive> S-Prim-Pow, [1]: ▶x, [2]: [CNode]10714}
-#   5: ◀Pow.10313:[CNode]10716{[0]: ValueNode<DoSignaturePrimitive> S-Prim-mul, [1]: ▶power, [2]: [CNode]10715}
-#   6: ◀Pow.10313:bc_dx{[0]: ValueNode<DoSignaturePrimitive> S-Prim-mul, [1]: [CNode]10716, [2]: ∇out}
-#   7: ◀Pow.10313:[CNode]10707{[0]: ValueNode<DoSignaturePrimitive> S-Prim-less, [1]: ▶x, [2]: ValueNode<Int64Imm> 0}
-#   8: Pow.10723:[CNode]10726{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
-#   9: Pow.10723:[CNode]10727{[0]: [CNode]10726, [1]: x}
-#  10: ◀Pow.10313:[CNode]10708{[0]: ValueNode<DoSignaturePrimitive> S-Prim-DType, [1]: ▶x}
-#  11: Pow.10723:[CNode]10728{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
-#  12: Pow.10723:[CNode]10729{[0]: [CNode]10728, [1]: x}
-#  13: ◀Pow.10313:[CNode]10710{[0]: ValueNode<FuncGraph> shape.10709, [1]: ▶x}
-#  14: Pow.10723:[CNode]10730{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
-#  15: Pow.10723:[CNode]10731{[0]: [CNode]10730, [1]: [CNode]10708, [2]: [CNode]10710, [3]: ValueNode<Int64Imm> 1}
-#  16: ◀Pow.10313:[CNode]10712{[0]: ValueNode<FuncGraph> fill.10711, [1]: [CNode]10708, [2]: [CNode]10710, [3]: ValueNode<Int64Imm> 1}
-#  17: Pow.10723:[CNode]10732{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
-#  18: Pow.10723:[CNode]10733{[0]: [CNode]10732, [1]: [CNode]10707, [2]: [CNode]10712, [3]: x}
-#  19: ◀Pow.10313:x{[0]: ValueNode<FuncGraph> select.10713, [1]: [CNode]10707, [2]: [CNode]10712, [3]: ▶x}
-#  20: Pow.10723:[CNode]10734{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
-#  21: Pow.10723:[CNode]10735{[0]: [CNode]10734, [1]: x}
-#  22: ◀Pow.10313:[CNode]10717{[0]: ValueNode<DoSignaturePrimitive> S-Prim-Log, [1]: x}
-#  23: ◀Pow.10313:[CNode]10718{[0]: ValueNode<DoSignaturePrimitive> S-Prim-mul, [1]: equiv[CNode]10423, [2]: [CNode]10717}
-#  24: ◀Pow.10313:bc_dpower{[0]: ValueNode<DoSignaturePrimitive> S-Prim-mul, [1]: [CNode]10718, [2]: ∇out}
-#  25: Pow.10723:[CNode]10736{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
-#  26: Pow.10723:[CNode]10737{[0]: [CNode]10736, [1]: x, [2]: power, [3]: bc_dx, [4]: bc_dpower}
-#  27: ◀Pow.10313:[CNode]10720{[0]: ValueNode<FuncGraph> binop_grad_common.10719, [1]: x, [2]: ▶power, [3]: bc_dx, [4]: bc_dpower}
-#  28: ◀Pow.10313:[CNode]10722{[0]: ValueNode<Primitive> Return, [1]: 10721}
-
-
-# [No.4] _tensor_sub_scalar.10314
-# In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/composite/multitype_ops/sub_impl.py(49)/def _tensor_sub_scalar(x, y):/
-funcgraph fg_10314(
-        %para51 : Tensor(F32)[]    # x
-        , %para52 : F32    # y
-    ) {
-
-#------------------------> 3
-    %1 = Primitive::resolve{prim_type=1}(NameSpace::SymbolStr, F)    #(ExternalType, ExternalType) #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(700)/        bc_dx = power * pow_op(x, power - 1.0) * dout/#[CNode]10714
-    %2 = Primitive::getattr{prim_type=1}(%1, "tensor_sub")    #(Undefined, Undefined) #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(700)/        bc_dx = power * pow_op(x, power - 1.0) * dout/#[CNode]10714
-    %3 = %2(%para51, %para52)    #(Tensor(F32)[], F32) #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(700)/        bc_dx = power * pow_op(x, power - 1.0) * dout/#[CNode]10714
-    Primitive::Return{prim_type=1}(%3)    #(Undefined) #scope: Gradients/Default/gradPow
-      # In file /home/dzp/miniconda3/envs/mindrl/lib/python3.7/site-packages/mindspore/ops/_grad/grad_math_ops.py(700)/        bc_dx = power * pow_op(x, power - 1.0) * dout/#[CNode]10714
-}
-# order:
-#   1: _tensor_sub_scalar.10314:[CNode]10714{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> SymbolStr: 'Namespace:mindspore.ops.composite.multitype_ops.sub_impl', [2]: ValueNode<Symbol> F}
-#   2: _tensor_sub_scalar.10314:[CNode]10714{[0]: ValueNode<Primitive> getattr, [1]: [CNode]10714, [2]: ValueNode<StringImm> tensor_sub}
-#   3: _tensor_sub_scalar.10738:[CNode]10739{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
-#   4: _tensor_sub_scalar.10738:[CNode]10740{[0]: [CNode]10739, [1]: x, [2]: y}
-#   5: _tensor_sub_scalar.10314:[CNode]10714{[0]: [CNode]10714, [1]: x, [2]: y}
-#   6: _tensor_sub_scalar.10314:[CNode]10714{[0]: ValueNode<Primitive> Return, [1]: [CNode]10714}
 
 
 #===============================================================================
-# num of function graphs in stack: 4/5 (Ignored 1 internal frames).
+# num of function graphs in stack: 1

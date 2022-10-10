@@ -42,10 +42,14 @@
 Test all algorithms in Tianshou
 ```bash
 python test/discrete/test_dqn.py
-
-python train.py -h
+python test/discrete/test_ppo.py
 ```
+Run all examples in Tianshou: Comming soon!
+
+
+
 Then the usage information will be shown as following, more configuration can be found in the default config file [config/default.json](https://github.com/BIT-MCS/DRL-DisasterVC/mcs/config/default.json).
+
 ```
 Distributed Options:
     --nb-learners <int>         Number of distributed learners [default: 1]
@@ -131,22 +135,9 @@ python evaluate.py --logdir ${your_log_path}
 ```
 ## :clap: Reference
 This codebase is based on adept and Ray which are open-sourced. Please refer to that repo for more documentation.
-- adept (https://github.com/heronsystems/adeptRL)
-- Ray (https://github.com/ray-project/ray)
+- tianshou (https://github.com/thu-ml/tianshou)
+- MindSpore/reinforcement (https://gitee.com/mindspore/reinforcement)
 
 ## :e-mail: Contact
-If you have any question, please email `3120211043@bit.edu.cn`.
+If you have any question, please email `604896160@qq.com`.
 
-## Paper
-If you are interested in our work, please cite our paper as
-```
-@inproceedings{10.1145/3447548.3467070,
-author = {Wang, Hao and Liu, Chi Harold and Dai, Zipeng and Tang, Jian and Wang, Guoren},
-title = {Energy-Efficient 3D Vehicular Crowdsourcing for Disaster Response by Distributed Deep Reinforcement Learning},
-doi = {10.1145/3447548.3467070},
-booktitle = {Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery & Data Mining},
-pages = {3679–3687},
-numpages = {9}
-}
-
-```
