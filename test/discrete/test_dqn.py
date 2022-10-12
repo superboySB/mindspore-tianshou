@@ -56,6 +56,8 @@ def test_dqn(args = get_args()):
     ms.set_context(mode=ms.PYNATIVE_MODE)
     if ms.get_context('device_target') in ['CPU']:
         ms.set_context(enable_graph_kernel=True)
+    np.random.seed(args.seed)
+    ms.set_seed(args.seed)
 
     env = gym.make(args.task)
     args.state_shape = env.observation_space.shape or env.observation_space.n
@@ -75,8 +77,6 @@ def test_dqn(args = get_args()):
         [lambda: gym.make(args.task) for _ in range(args.test_num)]
     )
     # seed
-    np.random.seed(args.seed)
-    ms.set_seed(args.seed)
     train_envs.seed(args.seed)
     test_envs.seed(args.seed)
     # Q_param = V_param = {"hidden_sizes": [128]}
@@ -85,12 +85,9 @@ def test_dqn(args = get_args()):
         args.state_shape,
         args.action_shape,
         hidden_sizes=args.hidden_sizes,
-        device=args.device,
         # dueling=(Q_param, V_param),
     )
-    # optim = nn.Adam(net.trainable_params(), learning_rate=args.lr)
-    optim= None
-
+    optim = nn.Adam(net.trainable_params(), learning_rate=args.lr)
     policy = DQNPolicy(
         net,
         optim,
@@ -108,11 +105,13 @@ def test_dqn(args = get_args()):
         )
     else:
         buf = VectorReplayBuffer(args.buffer_size, buffer_num=len(train_envs))
+
     # collector
     train_collector = Collector(policy, train_envs, buf, exploration_noise=True)
     test_collector = Collector(policy, test_envs, exploration_noise=True)
     # policy.set_eps(1)
     train_collector.collect(n_step=args.batch_size * args.training_num)
+
     # log
     log_path = os.path.join(args.logdir, args.task, 'dqn')
     writer = SummaryWriter(log_path)
@@ -162,7 +161,7 @@ def test_dqn(args = get_args()):
         pprint.pprint(result)
         # Let's watch its performance!
         env = gym.make(args.task)
-        policy.train(mode=False)
+        policy.eval()
         policy.set_eps(args.eps_test)
         collector = Collector(policy, env)
         result = collector.collect(n_episode=1, render=args.render)
@@ -170,8 +169,19 @@ def test_dqn(args = get_args()):
         print(f"Final reward: {rews.mean()}, length: {lens.mean()}")
 
 
-def test_dqn_evaluate(args = get_args()):
+def test_dqn_rendering(args = get_args()):
+    ms.set_context(device_target=args.device)
+    ms.set_context(mode=ms.PYNATIVE_MODE)
+    if ms.get_context('device_target') in ['CPU']:
+        ms.set_context(enable_graph_kernel=True)
+    np.random.seed(args.seed)
+    ms.set_seed(args.seed)
+
     env = gym.make(args.task)
+    args.state_shape = env.observation_space.shape or env.observation_space.n
+    args.action_shape = env.action_space.shape or env.action_space.n
+    env.reset(seed=args.seed)
+
 
     net = Net(
         args.state_shape,
@@ -190,11 +200,11 @@ def test_dqn_evaluate(args = get_args()):
     )
     param_not_load = ms.load_param_into_net(policy, ms.load_checkpoint('dqn.ckpt'))
     print(f"param_not_load:{param_not_load}")
-    policy.train(mode=False)
+    policy.eval()
     policy.set_eps(args.eps_test)
 
     collector = Collector(policy, env)
-    result = collector.collect(n_episode=1, render=1 / 35)
+    result = collector.collect(n_episode=1, render=1/35)
     rews, lens = result["rews"], result["lens"]
     print(f"Final reward: {rews.mean()}, length: {lens.mean()}")
 
@@ -208,3 +218,6 @@ def test_pdqn(args = get_args()):
 
 if __name__ == '__main__':
     test_dqn()
+    # test_dqn_rendering()
+    # test_pdqn()
+

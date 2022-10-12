@@ -1,3 +1,4 @@
+import collections
 from copy import deepcopy
 from typing import Any, Dict, Optional, Union
 
@@ -5,7 +6,7 @@ import numpy as np
 # import torch
 
 import mindspore as ms
-from mindspore import ops, nn,ms_function
+from mindspore import ops, nn
 
 from mindrl.data import Batch, ReplayBuffer, to_numpy, to_mindspore_as, to_mindspore
 from mindrl.policy import BasePolicy
@@ -76,15 +77,24 @@ class DQNPolicy(BasePolicy):
         """Set the eps for epsilon-greedy exploration."""
         self.eps = eps
 
-    def train(self, mode: bool = True) -> "DQNPolicy":
-        """Set the module in training mode, except for the target network."""
-        self.training = mode
-        self.model.set_train(mode)
+    def train(self) -> "DQNPolicy":
+        """Set the module in training mode"""
+        self.training = True
+        self.model.set_train(True)
+        return self
+
+    def eval(self) -> "DQNPolicy":
+        """Set the module in eval mode."""
+        self.training = False
+        self.model.set_train(False)
         return self
 
     def sync_weight(self) -> None:
         """Synchronize the weight for the target network."""
-        ms.load_param_into_net(self.model_old, self.model.parameters_dict())  # 可返回网络中没有被加载的参数。
+        params_dict = self.model.parameters_dict()
+        old_params_dict = self.model_old.parameters_dict()
+        modified_dict = collections.OrderedDict([(k_o,v) for (k,v),(k_o,v_o) in zip(params_dict.items(),old_params_dict.items())])
+        ms.load_param_into_net(self.model_old, modified_dict)  # 可返回网络中没有被加载的参数。
 
     def _target_q(self, buffer: ReplayBuffer, indices: np.ndarray) -> ms.Tensor:
         batch = buffer[indices]  # batch.obs_next: s_{t+n}
@@ -188,17 +198,12 @@ class DQNPolicy(BasePolicy):
         td_error = returns - q
         batch.weight = ops.stop_gradient(td_error)  # prio-buffer # todo: weights对梯度无贡献。
 
-        import copy
-        model = copy.deepcopy(self.model)
-        optimizer = nn.Adam(model.trainable_params(), learning_rate=1e-3)
-        _clip_loss_grad = self._clip_loss_grad
-
         def forward_fn(act, returns, obs_next):
-            logits, hidden = model(obs_next, state=None)
+            logits, hidden = self.model(obs_next, state=None)
             q = logits[ms.numpy.arange(len(logits)), act]
             td_error = returns - q
 
-            if _clip_loss_grad:
+            if self._clip_loss_grad:
                 y = q.reshape(-1, 1)
                 t = returns.reshape(-1, 1)
                 loss = nn.HuberLoss(reduction="mean")(y, t)
@@ -207,19 +212,15 @@ class DQNPolicy(BasePolicy):
 
             return loss
 
-        grad_fn = ops.value_and_grad(forward_fn, None, optimizer.parameters)
-        @ms_function
-        def train_step(obs, act, returns, obs_next):
+        grad_fn = ops.value_and_grad(forward_fn, None, self.optim.parameters)
+
+        def train_step(act, returns, obs_next):
             loss, grads = grad_fn(act, returns, obs_next)
-            optimizer(grads)
+            self.optim(grads)
             return loss,grads
 
-        loss,grads = train_step(obs, act, returns, obs_next)
-        self.model = copy.deepcopy(model)
-        del model
-
+        loss,grads = train_step(act, returns, obs_next)
         self._iter += 1
-        print(loss.item((0)))
         return {"loss": loss.item((0))}
 
     def exploration_noise(

@@ -13,6 +13,8 @@ from typing import (
 import numpy as np
 import mindspore as ms
 from mindspore import nn,ops
+from mindspore.common.initializer import Uniform,HeUniform
+import math
 
 # import torch
 # from torch import nn
@@ -29,7 +31,11 @@ def miniblock(
 ) -> List[nn.Cell]:
     """Construct a miniblock with given input/output-size, norm layer and \
     activation."""
-    layers: List[nn.Cell] = [linear_layer(input_size, output_size)]
+    # layers: List[nn.Cell] = [linear_layer(input_size, output_size)]
+    layers: List[nn.Cell] = [linear_layer(input_size, output_size,
+                                          weight_init=HeUniform(negative_slope=math.sqrt(5)),
+                                          bias_init=Uniform(scale=1/math.sqrt(input_size)))] # Pytorch初始化
+
     if norm_layer is not None:
         layers += [norm_layer(output_size)]  # type: ignore
     if activation is not None:
@@ -57,7 +63,6 @@ class MLP(nn.Cell):
         the same activation for all layers if passed in nn.Cell, or different
         activation for different Modules if passed in a list. Default to
         nn.ReLU.
-    :param device: which device to create this model on. Default to None.
     :param linear_layer: use this module as linear layer. Default to nn.Linear.
     :param bool flatten_input: whether to flatten input data. Default to True.
     """
@@ -69,13 +74,11 @@ class MLP(nn.Cell):
         hidden_sizes: Sequence[int] = (),
         norm_layer: Optional[Union[CellType, Sequence[CellType]]] = None,
         activation: Optional[Union[CellType, Sequence[CellType]]] = nn.ReLU,
-        device: str= "CPU",
         linear_layer: Type[nn.Dense] = nn.Dense,
         flatten_input: bool = True,
 
     ) -> None:
         super().__init__()
-        self.device=device
         if norm_layer:
             if isinstance(norm_layer, list):
                 assert len(norm_layer) == len(hidden_sizes)
@@ -107,9 +110,7 @@ class MLP(nn.Cell):
     @no_type_check
     def construct(self, obs: ms.Tensor) -> ms.Tensor:
         if self.flatten_input:
-            # obs = obs.flatten(1)
-            bsz=obs.shape[0]
-            obs=obs.reshape((bsz,-1))
+            obs = ops.flatten(obs)
         return self.model(obs)
 
 
@@ -131,8 +132,6 @@ class Net(nn.Cell):
         the same activation for all layers if passed in nn.Module, or different
         activation for different Modules if passed in a list. Default to
         nn.ReLU.
-    :param device: specify the device when the network actually runs. Default
-        to "cpu".
     :param bool softmax: whether to apply a softmax layer over the last layer's
         output.
     :param bool concat: whether the input shape is concatenated by state_shape
@@ -162,7 +161,6 @@ class Net(nn.Cell):
         state_shape: Union[int, Sequence[int]],
         action_shape: Union[int, Sequence[int]] = 0,
         hidden_sizes: Sequence[int] = (),
-        device: str = "CPU",
         norm_layer: Optional[CellType] = None,
         activation: Optional[CellType] = nn.ReLU,
         softmax: bool = False,
@@ -172,7 +170,6 @@ class Net(nn.Cell):
         linear_layer: Type[nn.Dense] = nn.Dense,
     ) -> None:
         super().__init__()
-        self.device=device
         self.softmax = softmax
         self.num_atoms = num_atoms
         input_dim = int(np.prod(state_shape))
@@ -182,7 +179,7 @@ class Net(nn.Cell):
         self.use_dueling = dueling_param is not None
         output_dim = action_dim if not self.use_dueling and not concat else 0
         self.model = MLP(
-            input_dim, output_dim, hidden_sizes, norm_layer, activation, device, linear_layer
+            input_dim, output_dim, hidden_sizes, norm_layer, activation, linear_layer
         )
         self.output_dim = self.model.output_dim
         if self.use_dueling:  # dueling DQN
@@ -193,12 +190,10 @@ class Net(nn.Cell):
             q_kwargs: Dict[str, Any] = {
                 **q_kwargs, "input_dim": self.output_dim,
                 "output_dim": q_output_dim,
-                "device":self.device,
             }
             v_kwargs: Dict[str, Any] = {
                 **v_kwargs, "input_dim": self.output_dim,
                 "output_dim": v_output_dim,
-                "device":self.device,
             }
             self.Q, self.V = MLP(**q_kwargs), MLP(**v_kwargs)
             self.output_dim = self.Q.output_dim
@@ -237,11 +232,9 @@ class Recurrent(nn.Cell):
         layer_num: int,
         state_shape: Union[int, Sequence[int]],
         action_shape: Union[int, Sequence[int]],
-        device: str = "CPU",
         hidden_layer_size: int = 128,
     ) -> None:
         super().__init__()
-        self.device = device
         self.nn = nn.LSTM(
             input_size=hidden_layer_size,
             hidden_size=hidden_layer_size,
@@ -271,7 +264,7 @@ class Recurrent(nn.Cell):
         if len(obs.shape) == 2:
             obs = ops.expand_dims(obs,-2)
         obs = self.fc1(obs)
-        # self.nn.flatten_parameters()  # TODO: Does MindSpore achieves "contiguous chunk"?
+        # self.nn.flatten_parameters()
         if state is None:
             obs, (hidden, cell) = self.nn(obs)
         else:
@@ -370,8 +363,6 @@ class BranchingNet(nn.Cell):
     the same activation for all layers if passed in nn.Module, or different
     activation for different Modules if passed in a list. Default to
     nn.ReLU.
-    :param device: specify the device when the network actually runs. Default
-    to "cpu".
     :param bool softmax: whether to apply a softmax layer over the last layer's
     output.
     """
@@ -386,10 +377,8 @@ class BranchingNet(nn.Cell):
         action_hidden_sizes: List[int] = [],
         norm_layer: Optional[CellType] = None,
         activation: Optional[CellType] = nn.ReLU,
-        device: str = "CPU",
     ) -> None:
         super().__init__()
-        self.device = device
         self.num_branches = num_branches
         self.action_per_branch = action_per_branch
         # common network
@@ -397,14 +386,14 @@ class BranchingNet(nn.Cell):
         common_output_dim = 0
         self.common = MLP(
             common_input_dim, common_output_dim, common_hidden_sizes, norm_layer,
-            activation, device
+            activation
         )
         # value network
         value_input_dim = common_hidden_sizes[-1]
         value_output_dim = 1
         self.value = MLP(
             value_input_dim, value_output_dim, value_hidden_sizes, norm_layer,
-            activation, device
+            activation
         )
         # action branching network
         action_input_dim = common_hidden_sizes[-1]
@@ -413,7 +402,7 @@ class BranchingNet(nn.Cell):
             [
                 MLP(
                     action_input_dim, action_output_dim, action_hidden_sizes,
-                    norm_layer, activation, device
+                    norm_layer, activation
                 ) for _ in range(self.num_branches)
             ]
         )

@@ -41,6 +41,8 @@
 
 Test all algorithms in Tianshou
 ```bash
+python -m test discover
+
 python test/discrete/test_dqn.py
 python test/discrete/test_ppo.py
 ```
@@ -133,6 +135,24 @@ To evaluate the trained model, using the following command:
 ```
 python evaluate.py --logdir ${your_log_path}
 ```
+
+## :computer: Q&A
+Q: Meet this issue when rendering
+> libGL error: MESA-LOADER: failed to open iris: /usr/lib/dri/iris_dri.so: cannot open shared object file: No such file or directory (search paths /usr/lib/x86_64-linux-gnu/dri:\$${ORIGIN}/dri:/usr/lib/dri, suffix _dri)
+
+A: modify the conda env
+
+```sh
+cd /home/$USER/miniconda/envs/mindrl/lib
+mkdir backup  # Create a new folder to keep the original libstdc++
+mv libstd* backup  # Put all libstdc++ files into the folder, including soft links
+cp /usr/lib/x86_64-linux-gnu/libstdc++.so.6  ./ # Copy the c++ dynamic link library of the system here
+ln -s libstdc++.so.6 libstdc++.so
+ln -s libstdc++.so.6 libstdc++.so.6.0.29
+```
+
+
+
 ## :clap: Reference
 This codebase is based on adept and Ray which are open-sourced. Please refer to that repo for more documentation.
 - tianshou (https://github.com/thu-ml/tianshou)
