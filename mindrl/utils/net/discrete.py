@@ -45,7 +45,6 @@ class Actor(nn.Module):
         device: Union[str, int, torch.device] = "cpu",
     ) -> None:
         super().__init__()
-        self.device = device
         self.preprocess = preprocess_net
         self.output_dim = int(np.prod(action_shape))
         input_dim = getattr(preprocess_net, "output_dim", preprocess_net_output_dim)
@@ -53,7 +52,6 @@ class Actor(nn.Module):
             input_dim,  # type: ignore
             self.output_dim,
             hidden_sizes,
-            device=self.device
         )
         self.softmax_output = softmax_output
 

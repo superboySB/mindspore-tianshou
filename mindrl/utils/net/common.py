@@ -205,7 +205,7 @@ class Net(nn.Cell):
         info: Dict[str, Any] = {},
     ) -> Tuple[ms.Tensor, Any]:
         """Mapping: obs -> flatten (inside MLP)-> logits."""
-        logits = self.model(obs)  # TODO: 和torch的MLP输出差了好多呀
+        logits = self.model(obs)
         bsz = logits.shape[0]
         if self.use_dueling:  # Dueling DQN
             q, v = self.Q(logits), self.V(logits)

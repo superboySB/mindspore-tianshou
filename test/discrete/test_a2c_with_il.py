@@ -5,8 +5,10 @@ import pprint
 import gym
 import numpy as np
 import pytest
-import torch
-from torch.utils.tensorboard import SummaryWriter
+
+import mindspore as ms
+import mindspore.nn as nn
+from tensorboardX import SummaryWriter
 
 from mindrl.data import Collector, VectorReplayBuffer
 from mindrl.policy import A2CPolicy, ImitationPolicy
@@ -44,9 +46,8 @@ def get_args():
     parser.add_argument('--test-num', type=int, default=100)
     parser.add_argument('--logdir', type=str, default='log')
     parser.add_argument('--render', type=float, default=0.)
-    parser.add_argument(
-        '--device', type=str, default='cuda' if torch.cuda.is_available() else 'cpu'
-    )
+    parser.add_argument('--device', type=str, default='CPU', choices=['Ascend', 'CPU', 'GPU'],
+                        help='Choose a device to run the dqn example(Default: CPU).')
     # a2c special
     parser.add_argument('--vf-coef', type=float, default=0.5)
     parser.add_argument('--ent-coef', type=float, default=0.0)
@@ -59,6 +60,14 @@ def get_args():
 
 @pytest.mark.skipif(envpool is None, reason="EnvPool doesn't support this platform")
 def test_a2c_with_il(args=get_args()):
+    ms.set_context(device_target=args.device)
+    ms.set_context(mode=ms.PYNATIVE_MODE)
+    if ms.get_context('device_target') in ['CPU']:
+        ms.set_context(enable_graph_kernel=True)
+    np.random.seed(args.seed)
+    ms.set_seed(args.seed)
+
+
     # if you want to use python vector env, please refer to other test scripts
     train_envs = env = envpool.make_gym(
         args.task, num_envs=args.training_num, seed=args.seed
@@ -71,13 +80,11 @@ def test_a2c_with_il(args=get_args()):
         args.reward_threshold = default_reward_threshold.get(
             args.task, env.spec.reward_threshold
         )
-    # seed
-    np.random.seed(args.seed)
-    torch.manual_seed(args.seed)
+
     # model
-    net = Net(args.state_shape, hidden_sizes=args.hidden_sizes, device=args.device)
-    actor = Actor(net, args.action_shape, device=args.device).to(args.device)
-    critic = Critic(net, device=args.device).to(args.device)
+    net = Net(args.state_shape, hidden_sizes=args.hidden_sizes)
+    actor = Actor(net, args.action_shape)
+    critic = Critic(net).to(args.device)
     optim = torch.optim.Adam(ActorCritic(actor, critic).parameters(), lr=args.lr)
     dist = torch.distributions.Categorical
     policy = A2CPolicy(

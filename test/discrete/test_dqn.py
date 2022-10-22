@@ -19,7 +19,7 @@ from mindrl.utils.net.common import Net
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--task', type=str, default='CartPole-v1')
+    parser.add_argument('--task', type=str, default='CartPole-v0')
     parser.add_argument('--reward-threshold', type=float, default=None)
     parser.add_argument('--seed', type=int, default=1626)
     parser.add_argument('--eps-test', type=float, default=0.05)
@@ -63,7 +63,7 @@ def test_dqn(args = get_args()):
     args.state_shape = env.observation_space.shape or env.observation_space.n
     args.action_shape = env.action_space.shape or env.action_space.n
     if args.reward_threshold is None:
-        default_reward_threshold = {"CartPole-v1": 195}
+        default_reward_threshold = {"CartPole-v0": 195}
         args.reward_threshold = default_reward_threshold.get(
             args.task, env.spec.reward_threshold
         )
@@ -187,7 +187,6 @@ def test_dqn_rendering(args = get_args()):
         args.state_shape,
         args.action_shape,
         hidden_sizes=args.hidden_sizes,
-        device=args.device,
         # dueling=(Q_param, V_param),
     )
     optim = nn.Adam(net.trainable_params(), learning_rate=args.lr)
