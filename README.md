@@ -16,9 +16,6 @@
 2. [Optional] Create Virtual Environment for GPU
    
    ```sh
-   conda create -n mindrl python==3.7
-   conda activate mindrl
-   
    # 需要的话，可以先测试单机GPU版本的ms是否可用。（ms测试cuda版本的脚本是写死的，因此只能精准参考指南）
    sudo apt-get install libgmp-dev
    wget https://developer.download.nvidia.com/compute/cuda/11.1.1/local_installers/cuda_11.1.1_455.32.00_linux.run
@@ -26,15 +23,19 @@
    echo -e "export PATH=/usr/local/cuda-11.1/bin:\$PATH" >> ~/.bashrc
    echo -e "export LD_LIBRARY_PATH=/usr/local/cuda-11.1/lib64:\$LD_LIBRARY_PATH" >> ~/.bashrc
    source ~/.bashrc
-   # 还得自己像早期TF一样搞cudnn...（以下仅为了mark版本，需要有license）
+   
+   # 然后还得自己像早期TF一样搞cudnn...（以下仅为了mark版本，需要有license）
    wget https://developer.nvidia.com/compute/machine-learning/cudnn/secure/8.0.5/11.1_20201106/cudnn-11.1-linux-x64-v8.0.5.39.tgz
    tar -zxvf cudnn-11.1-linux-x64-v8.0.5.39.tgz
    sudo cp cuda/include/cudnn.h /usr/local/cuda-11.1/include
    sudo cp cuda/lib64/libcudnn* /usr/local/cuda-11.1/lib64
    sudo chmod a+r /usr/local/cuda-11.1/include/cudnn.h /usr/local/cuda-11.1/lib64/libcudnn*
-   # 亲测用conda配置上述python临时包是无效的，因为下面的包会自动扫/usr/local的version,也可直接改ms出错位置的源代码
+   
+   conda create -n mindrl python==3.7
+   conda activate mindrl
    pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/1.8.1/MindSpore/gpu/x86_64/cuda-11.1/mindspore_gpu-1.8.1-cp37-cp37m-linux_x86_64.whl --trusted-host ms-release.obs.cn-north-4.myhuaweicloud.com -i https://pypi.tuna.tsinghua.edu.cn/simple
    ```
+   亲测用conda配置cudatoolkit+cudnn是报错的（但是pytorch就可以），这因为[源代码](https://gitee.com/mindspore/mindspore/blob/master/mindspore/python/mindspore/run_check/_check_version.py)会自动扫/usr/local的version，且直接写死成了10.1和11.1。目前实际运行结果是，GPU与CPU训练step相近，速度提升取决于设备性能，所有测试脚本中均可通过设置device切换gpu/cpu。
 3. Install minimal dependent packages
     ```sh
     # 除了Ascend，兼容最好的其实还是CPU版本的ms:
