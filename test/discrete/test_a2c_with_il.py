@@ -84,7 +84,7 @@ def test_a2c_with_il(args=get_args()):
     # model
     net = Net(args.state_shape, hidden_sizes=args.hidden_sizes)
     actor = Actor(net, args.action_shape)
-    critic = Critic(net).to(args.device)
+    critic = Critic(net)
     optim = torch.optim.Adam(ActorCritic(actor, critic).parameters(), lr=args.lr)
     dist = torch.distributions.Categorical
     policy = A2CPolicy(
@@ -142,6 +142,7 @@ def test_a2c_with_il(args=get_args()):
         result = collector.collect(n_episode=1, render=args.render)
         rews, lens = result["rews"], result["lens"]
         print(f"Final reward: {rews.mean()}, length: {lens.mean()}")
+
 
     policy.eval()
     # here we define an imitation collector with a trivial policy

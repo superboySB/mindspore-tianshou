@@ -35,7 +35,7 @@
    conda activate mindrl
    pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/1.8.1/MindSpore/gpu/x86_64/cuda-11.1/mindspore_gpu-1.8.1-cp37-cp37m-linux_x86_64.whl --trusted-host ms-release.obs.cn-north-4.myhuaweicloud.com -i https://pypi.tuna.tsinghua.edu.cn/simple
    ```
-   亲测用conda配置cudatoolkit+cudnn是报错的（但是pytorch就可以），这因为[源代码](https://gitee.com/mindspore/mindspore/blob/master/mindspore/python/mindspore/run_check/_check_version.py)会自动扫/usr/local的version，且直接写死成了10.1和11.1。目前实际运行结果是，GPU与CPU训练step相近，速度提升取决于设备性能，所有测试脚本中均可通过设置device切换gpu/cpu。
+   亲测用conda配置cudatoolkit+cudnn是报错的（但是pytorch就可以），这因为[源代码](https://gitee.com/mindspore/mindspore/blob/master/mindspore/python/mindspore/run_check/_check_version.py)会自动扫/usr/local的version，且直接写死成了10.1和11.1。目前实际运行结果是，GPU与CPU训练step相近，速度提升取决于设备性能，后续所有测试脚本中均可通过设置device切换gpu/cpu。
 3. Install minimal dependent packages
     ```sh
     # 除了Ascend，兼容最好的其实还是CPU版本的ms:

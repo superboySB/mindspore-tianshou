@@ -36,7 +36,6 @@ def to_numpy(x: Any) -> Union[Batch, np.ndarray]:
 def to_mindspore(
     x: Any,
     dtype: ms.dtype = None,
-    device: Union[str, int] = "CPU",
 ) -> Union[Batch, ms.Tensor]:
     """Return an object without np.ndarray."""
     if isinstance(x, np.ndarray) and issubclass(
@@ -51,10 +50,10 @@ def to_mindspore(
             x = ms.Tensor(x,dtype=dtype)
         return x
     elif isinstance(x, (np.number, np.bool_, Number)):
-        return to_mindspore(np.asanyarray(x), dtype, device)
+        return to_mindspore(np.asanyarray(x), dtype)
     elif isinstance(x, (dict, Batch)):
         x = Batch(x, copy=True) if isinstance(x, dict) else deepcopy(x)
-        x.to_mindspore(dtype, device)
+        x.to_mindspore(dtype)
         return x
     elif isinstance(x, (list, tuple)):
         return to_mindspore(_parse_value(x), dtype)
@@ -139,7 +138,7 @@ def to_hdf5(
             y[k].attrs["__data_type__"] = v.__class__.__name__
 
 
-def from_hdf5(x: h5py.Group, device: Optional[str] = None) -> Hdf5ConvertibleValues:
+def from_hdf5(x: h5py.Group) -> Hdf5ConvertibleValues:
     """Restore object from HDF5 group."""
     if isinstance(x, h5py.Dataset):
         # handle datasets
@@ -154,5 +153,5 @@ def from_hdf5(x: h5py.Group, device: Optional[str] = None) -> Hdf5ConvertibleVal
         y = dict(x.attrs.items())
         data_type = y.pop("__data_type__", None)
         for k, v in x.items():
-            y[k] = from_hdf5(v, device)
+            y[k] = from_hdf5(v)
         return Batch(y) if data_type == "Batch" else y
