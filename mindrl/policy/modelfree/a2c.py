@@ -1,9 +1,8 @@
 from typing import Any, Dict, List, Optional, Type
 
 import numpy as np
-import torch
-import torch.nn.functional as F
-from torch import nn
+import mindspore as ms
+from mindspore import ops, nn
 
 from mindrl.data import Batch, ReplayBuffer, to_mindspore_as
 from mindrl.policy import PGPolicy
@@ -52,10 +51,10 @@ class A2CPolicy(PGPolicy):
 
     def __init__(
         self,
-        actor: torch.nn.Module,
-        critic: torch.nn.Module,
-        optim: torch.optim.Optimizer,
-        dist_fn: Type[torch.distributions.Distribution],
+        actor: nn.Cell,
+        critic: nn.Cell,
+        optim: nn.Optimizer,
+        dist_fn: Type[nn.probability.distribution.Distribution],
         vf_coef: float = 0.5,
         ent_coef: float = 0.01,
         max_grad_norm: Optional[float] = None,

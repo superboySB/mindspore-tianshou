@@ -3,7 +3,7 @@ from copy import deepcopy
 from typing import Any, Dict, Optional, Union
 
 import numpy as np
-# import torch
+
 
 import mindspore as ms
 from mindspore import ops, nn
@@ -171,8 +171,7 @@ class DQNPolicy(BasePolicy):
         model = getattr(self, model)
         obs = batch[input]
         obs_next = obs.obs if hasattr(obs, "obs") else obs
-        obs_next = ms.Tensor(obs_next, dtype=ms.float32)
-        logits, hidden = model(obs_next, state=state, info=batch.info)
+        logits, hidden = model(to_mindspore(obs_next), state=state, info=batch.info)
         q = self.compute_q_value(logits, getattr(obs, "mask", None))
         if not hasattr(self, "max_action_num"):
             self.max_action_num = q.shape[1]
@@ -185,27 +184,27 @@ class DQNPolicy(BasePolicy):
 
         weight = batch.pop("weight", 1.0)  #
 
-        obs = to_mindspore(batch["obs"])
+        obs = to_mindspore(batch.obs)
         obs_next = to_mindspore(obs.obs) if hasattr(obs, "obs") else obs
         act = to_mindspore(batch.act)
-        returns = to_mindspore(batch.returns.flatten())
+        ret = to_mindspore(batch.returns.flatten())
 
         logits, hidden = self.model(obs_next, state=None)
         q = self.compute_q_value(logits, getattr(obs, "mask", None))
         if not hasattr(self, "max_action_num"):
             self.max_action_num = q.shape[1]
         q = logits[np.arange(len(logits)).tolist(), batch.act.tolist()]
-        td_error = returns - q
+        td_error = ret - q
         batch.weight = ops.stop_gradient(td_error)  # prio-buffer # todo: weights对梯度无贡献。
 
-        def forward_fn(act, returns, obs_next):
+        def forward_fn(act, ret, obs_next):
             logits, hidden = self.model(obs_next, state=None)
             q = logits[ms.numpy.arange(len(logits)), act]
-            td_error = returns - q
+            td_error = ret - q
 
             if self._clip_loss_grad:
                 y = q.reshape(-1, 1)
-                t = returns.reshape(-1, 1)
+                t = ret.reshape(-1, 1)
                 loss = nn.HuberLoss(reduction="mean")(y, t)
             else:
                 loss = (td_error.pow(2) * weight).mean()
@@ -214,12 +213,12 @@ class DQNPolicy(BasePolicy):
 
         grad_fn = ops.value_and_grad(forward_fn, None, self.optim.parameters)
 
-        def train_step(act, returns, obs_next):
-            loss, grads = grad_fn(act, returns, obs_next)
+        def train_step(act, ret, obs_next):
+            loss, grads = grad_fn(act, ret, obs_next)
             self.optim(grads)
             return loss,grads
 
-        loss,grads = train_step(act, returns, obs_next)
+        loss,grads = train_step(act, ret, obs_next)
         self._iter += 1
         return {"loss": loss.item((0))}
 

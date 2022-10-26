@@ -1,7 +1,9 @@
 from typing import Any, Dict, List, Optional, Type, Union
 
 import numpy as np
-import torch
+
+import mindspore as ms
+from mindspore import ops, nn
 
 from mindrl.data import Batch, ReplayBuffer, to_mindspore, to_mindspore_as
 from mindrl.policy import BasePolicy
@@ -36,16 +38,16 @@ class PGPolicy(BasePolicy):
     """
 
     def __init__(
-        self,
-        model: torch.nn.Module,
-        optim: torch.optim.Optimizer,
-        dist_fn: Type[torch.distributions.Distribution],
-        discount_factor: float = 0.99,
-        reward_normalization: bool = False,
-        action_scaling: bool = True,
-        action_bound_method: str = "clip",
-        deterministic_eval: bool = False,
-        **kwargs: Any,
+            self,
+            model: nn.Cell,
+            optim: nn.Optimizer,
+            dist_fn: Type[nn.probability.distribution.Distribution],
+            discount_factor: float = 0.99,
+            reward_normalization: bool = False,
+            action_scaling: bool = True,
+            action_bound_method: str = "clip",
+            deterministic_eval: bool = False,
+            **kwargs: Any,
     ) -> None:
         super().__init__(
             action_scaling=action_scaling,
@@ -63,7 +65,7 @@ class PGPolicy(BasePolicy):
         self._deterministic_eval = deterministic_eval
 
     def process_fn(
-        self, batch: Batch, buffer: ReplayBuffer, indices: np.ndarray
+            self, batch: Batch, buffer: ReplayBuffer, indices: np.ndarray
     ) -> Batch:
         r"""Compute the discounted returns for each transition.
 
@@ -79,17 +81,17 @@ class PGPolicy(BasePolicy):
         )
         if self._rew_norm:
             batch.returns = (unnormalized_returns - self.ret_rms.mean) / \
-                np.sqrt(self.ret_rms.var + self._eps)
+                            np.sqrt(self.ret_rms.var + self._eps)
             self.ret_rms.update(unnormalized_returns)
         else:
             batch.returns = unnormalized_returns
         return batch
 
-    def forward(
-        self,
-        batch: Batch,
-        state: Optional[Union[dict, Batch, np.ndarray]] = None,
-        **kwargs: Any,
+    def construct(
+            self,
+            batch: Batch,
+            state: Optional[Union[dict, Batch, np.ndarray]] = None,
+            **kwargs: Any,
     ) -> Batch:
         """Compute action over the given batch data.
 
@@ -105,35 +107,59 @@ class PGPolicy(BasePolicy):
             Please refer to :meth:`~mindrl.policy.BasePolicy.forward` for
             more detailed explanation.
         """
-        logits, hidden = self.actor(batch.obs, state=state)
+        logits, hidden = self.actor(to_mindspore(batch.obs), state=state)
         if isinstance(logits, tuple):
-            dist = self.dist_fn(*logits)
+            dist = self.dist_fn(ops.Softmax(axis=-1)(logits)[0])
         else:
-            dist = self.dist_fn(logits)
+            dist = self.dist_fn(ops.Softmax(axis=-1)(logits))
+
         if self._deterministic_eval and not self.training:
             if self.action_type == "discrete":
-                act = logits.argmax(-1)
+                act = ops.argmax(logits, axis=-1)
             elif self.action_type == "continuous":
                 act = logits[0]
         else:
-            act = dist.sample()
+            act = dist.sample()  # TODO: meet issues of batch inputs for multinominal
         return Batch(logits=logits, act=act, state=hidden, dist=dist)
 
     def learn(  # type: ignore
-        self, batch: Batch, batch_size: int, repeat: int, **kwargs: Any
+            self, batch: Batch, batch_size: int, repeat: int, **kwargs: Any
     ) -> Dict[str, List[float]]:
         losses = []
+        state = None
         for _ in range(repeat):
             for minibatch in batch.split(batch_size, merge_last=True):
-                self.optim.zero_grad()
-                result = self(minibatch)
-                dist = result.dist
-                act = to_mindspore_as(minibatch.act, result.act)
-                ret = to_mindspore(minibatch.returns, torch.float, result.act.device)
-                log_prob = dist.log_prob(act).reshape(len(ret), -1).transpose(0, 1)
-                loss = -(log_prob * ret).mean()
-                loss.backward()
-                self.optim.step()
-                losses.append(loss.item())
+                obs = to_mindspore(minibatch.obs)
+                act = to_mindspore(minibatch.act)
+                ret = to_mindspore(minibatch.returns)
+
+                def forward_fn(state, obs, act, ret):
+                    logits, hidden = self.actor(obs, state=state)
+                    if isinstance(logits, tuple):
+                        dist = self.dist_fn(ops.Softmax(axis=-1)(logits)[0])
+                    else:
+                        dist = self.dist_fn(ops.Softmax(axis=-1)(logits))
+
+                    if self._deterministic_eval and not self.training:
+                        if self.action_type == "discrete":
+                            act = ops.argmax(logits, axis=-1)
+                        elif self.action_type == "continuous":
+                            act = logits[0]
+                    else:
+                        act = dist.sample()
+
+                    log_prob = dist.log_prob(act).reshape(len(ret), -1).transpose(0, 1)
+                    loss = -(log_prob * ret).mean()
+                    return loss
+
+                grad_fn = ops.value_and_grad(forward_fn, None, self.optim.parameters)
+
+                def train_step(state, obs, act, ret):
+                    loss, grads = grad_fn(state, obs, act, ret)
+                    self.optim(grads)
+                    return loss, grads
+
+                loss, grads = train_step(state, obs, act, ret)
+                losses.append(loss.item((0)))
 
         return {"loss": losses}

@@ -85,8 +85,8 @@ def test_a2c_with_il(args=get_args()):
     net = Net(args.state_shape, hidden_sizes=args.hidden_sizes)
     actor = Actor(net, args.action_shape)
     critic = Critic(net)
-    optim = torch.optim.Adam(ActorCritic(actor, critic).parameters(), lr=args.lr)
-    dist = torch.distributions.Categorical
+    optim = nn.Adam(ActorCritic(actor, critic).trainable_params(),learning_rate=args.lr)
+    dist = nn.probability.distribution.Categorical
     policy = A2CPolicy(
         actor,
         critic,

@@ -4,8 +4,11 @@ import pprint
 
 import gym
 import numpy as np
-import torch
-from torch.utils.tensorboard import SummaryWriter
+
+import mindspore as ms
+import mindspore.nn as nn
+from mindspore.common.initializer import Zero, Orthogonal
+from tensorboardX import SummaryWriter
 
 from mindrl.data import Collector, VectorReplayBuffer
 from mindrl.env import DummyVectorEnv
@@ -34,14 +37,20 @@ def get_args():
     parser.add_argument('--logdir', type=str, default='log')
     parser.add_argument('--render', type=float, default=0.)
     parser.add_argument('--rew-norm', type=int, default=1)
-    parser.add_argument(
-        '--device', type=str, default='cuda' if torch.cuda.is_available() else 'cpu'
-    )
+    parser.add_argument('--device', type=str, default='CPU', choices=['Ascend', 'CPU', 'GPU'],
+                        help='Choose a device to run the dqn example(Default: CPU).')
     args = parser.parse_known_args()[0]
     return args
 
 
 def test_pg(args=get_args()):
+    ms.set_context(device_target=args.device)
+    ms.set_context(mode=ms.PYNATIVE_MODE)
+    if ms.get_context('device_target') in ['CPU']:
+        ms.set_context(enable_graph_kernel=True)
+    np.random.seed(args.seed)
+    ms.set_seed(args.seed)
+
     env = gym.make(args.task)
     args.state_shape = env.observation_space.shape or env.observation_space.n
     args.action_shape = env.action_space.shape or env.action_space.n
@@ -60,8 +69,6 @@ def test_pg(args=get_args()):
         [lambda: gym.make(args.task) for _ in range(args.test_num)]
     )
     # seed
-    np.random.seed(args.seed)
-    torch.manual_seed(args.seed)
     train_envs.seed(args.seed)
     test_envs.seed(args.seed)
     # model
@@ -69,11 +76,10 @@ def test_pg(args=get_args()):
         args.state_shape,
         args.action_shape,
         hidden_sizes=args.hidden_sizes,
-        device=args.device,
         softmax=True
-    ).to(args.device)
-    optim = torch.optim.Adam(net.parameters(), lr=args.lr)
-    dist = torch.distributions.Categorical
+    )
+    optim = nn.Adam(net.trainable_params(), learning_rate=args.lr)
+    dist = nn.probability.distribution.Categorical
     policy = PGPolicy(
         net,
         optim,
@@ -82,11 +88,12 @@ def test_pg(args=get_args()):
         reward_normalization=args.rew_norm,
         action_space=env.action_space,
     )
-    for m in net.modules():
-        if isinstance(m, torch.nn.Linear):
+    for m in net.cells():
+        if isinstance(m, nn.Dense):
             # orthogonal initialization
-            torch.nn.init.orthogonal_(m.weight, gain=np.sqrt(2))
-            torch.nn.init.zeros_(m.bias)
+            m.weight.set_data(Orthogonal(gain=np.sqrt(2)))
+            m.bias.set_data(Zero())
+
     # collector
     train_collector = Collector(
         policy, train_envs, VectorReplayBuffer(args.buffer_size, len(train_envs))
@@ -98,7 +105,7 @@ def test_pg(args=get_args()):
     logger = TensorboardLogger(writer)
 
     def save_best_fn(policy):
-        torch.save(policy.state_dict(), os.path.join(log_path, 'policy.pth'))
+        ms.save_checkpoint(policy, os.path.join(log_path, 'policy.ckpt'))
 
     def stop_fn(mean_rewards):
         return mean_rewards >= args.reward_threshold
