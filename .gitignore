@@ -132,5 +132,7 @@ dmypy.json
 .idea/
 log/
 kernel_meta/
+akg_kernel_meta/
+akg_build_tmp.key
 rank_0/
 *.ckpt
