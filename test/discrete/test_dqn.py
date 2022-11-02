@@ -45,7 +45,7 @@ def get_args():
     parser.add_argument('--alpha', type=float, default=0.6)
     parser.add_argument('--beta', type=float, default=0.4)
     parser.add_argument('--device', type=str, default='CPU', choices=['Ascend', 'CPU', 'GPU'],
-                        help='Choose a device to run the dqn example(Default: CPU).')
+                        help='Choose a device to run the example(Default: CPU).')
 
     args = parser.parse_known_args()[0]
     return args

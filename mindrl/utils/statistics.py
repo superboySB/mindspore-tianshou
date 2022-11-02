@@ -45,7 +45,10 @@ class MovAvg(object):
             data_array = [data_array]
         for number in data_array:  # type: ignore
             if number not in self.banned:
-                self.cache.append(number)
+                if isinstance(number, ms.Tensor):
+                    self.cache.append(number.asnumpy())
+                else:
+                    self.cache.append(number)
         if self.size > 0 and len(self.cache) > self.size:
             self.cache = self.cache[-self.size:]
         return self.get()

@@ -195,7 +195,7 @@ class DQNPolicy(BasePolicy):
             self.max_action_num = q.shape[1]
         q = logits[np.arange(len(logits)).tolist(), batch.act.tolist()]
         td_error = ret - q
-        batch.weight = ops.stop_gradient(td_error)  # prio-buffer # todo: weights对梯度无贡献。
+        batch.weight = ops.stop_gradient(td_error)  # prio-buffer
 
         def forward_fn(act, ret, obs_next):
             logits, hidden = self.model(obs_next, state=None)
@@ -220,7 +220,7 @@ class DQNPolicy(BasePolicy):
 
         loss,grads = train_step(act, ret, obs_next)
         self._iter += 1
-        return {"loss": loss.item((0))}
+        return {"loss": loss.item(0)}
 
     def exploration_noise(
             self,

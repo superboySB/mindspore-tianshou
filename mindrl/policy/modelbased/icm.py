@@ -1,8 +1,8 @@
 from typing import Any, Dict, Optional, Union
 
 import numpy as np
-import torch
-import torch.nn.functional as F
+import mindspore as ms
+from mindspore import ops, nn
 
 from mindrl.data import Batch, ReplayBuffer, to_numpy, to_mindspore
 from mindrl.policy import BasePolicy
@@ -27,14 +27,14 @@ class ICMPolicy(BasePolicy):
     """
 
     def __init__(
-        self,
-        policy: BasePolicy,
-        model: IntrinsicCuriosityModule,
-        optim: torch.optim.Optimizer,
-        lr_scale: float,
-        reward_scale: float,
-        forward_loss_weight: float,
-        **kwargs: Any,
+            self,
+            policy: BasePolicy,
+            model: IntrinsicCuriosityModule,
+            optim: nn.Optimizer,
+            lr_scale: float,
+            reward_scale: float,
+            forward_loss_weight: float,
+            **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
         self.policy = policy
@@ -48,14 +48,14 @@ class ICMPolicy(BasePolicy):
         """Set the module in training mode."""
         self.policy.train(mode)
         self.training = mode
-        self.model.train(mode)
+        self.model.set_train(mode)
         return self
 
-    def forward(
-        self,
-        batch: Batch,
-        state: Optional[Union[dict, Batch, np.ndarray]] = None,
-        **kwargs: Any,
+    def construct(
+            self,
+            batch: Batch,
+            state: Optional[Union[dict, Batch, np.ndarray]] = None,
+            **kwargs: Any,
     ) -> Batch:
         """Compute action over the given batch data by inner policy.
 
@@ -64,7 +64,7 @@ class ICMPolicy(BasePolicy):
             Please refer to :meth:`~mindrl.policy.BasePolicy.forward` for
             more detailed explanation.
         """
-        return self.policy.forward(batch, state, **kwargs)
+        return self.policy.construct(batch, state, **kwargs)
 
     def exploration_noise(self, act: Union[np.ndarray, Batch],
                           batch: Batch) -> Union[np.ndarray, Batch]:
@@ -78,7 +78,7 @@ class ICMPolicy(BasePolicy):
             raise NotImplementedError()
 
     def process_fn(
-        self, batch: Batch, buffer: ReplayBuffer, indices: np.ndarray
+            self, batch: Batch, buffer: ReplayBuffer, indices: np.ndarray
     ) -> Batch:
         """Pre-process the data from the provided replay buffer.
 
@@ -90,7 +90,7 @@ class ICMPolicy(BasePolicy):
         return self.policy.process_fn(batch, buffer, indices)
 
     def post_process_fn(
-        self, batch: Batch, buffer: ReplayBuffer, indices: np.ndarray
+            self, batch: Batch, buffer: ReplayBuffer, indices: np.ndarray
     ) -> None:
         """Post-process the data from the provided replay buffer.
 
@@ -102,22 +102,36 @@ class ICMPolicy(BasePolicy):
 
     def learn(self, batch: Batch, **kwargs: Any) -> Dict[str, float]:
         res = self.policy.learn(batch, **kwargs)
-        self.optim.zero_grad()
-        act_hat = batch.policy.act_hat
-        act = to_mindspore(batch.act, dtype=torch.long, device=act_hat.device)
-        inverse_loss = F.cross_entropy(act_hat, act).mean()
-        forward_loss = batch.policy.mse_loss.mean()
-        loss = (
-            (1 - self.forward_loss_weight) * inverse_loss +
-            self.forward_loss_weight * forward_loss
-        ) * self.lr_scale
-        loss.backward()
-        self.optim.step()
-        res.update(
-            {
-                "loss/icm": loss.item(),
-                "loss/icm/forward": forward_loss.item(),
-                "loss/icm/inverse": inverse_loss.item()
-            }
-        )
+
+        obs = to_mindspore(batch.obs)
+        act = to_mindspore(batch.act, dtype=ms.int32)
+        obs_next = to_mindspore(batch.obs_next)
+
+        def forward_fn(obs, act, obs_next):
+            mse_loss, act_hat = self.model(obs, act, obs_next)
+            inverse_loss = ops.cross_entropy(act_hat, act).mean()
+            forward_loss = batch.policy.mse_loss.mean()
+            loss = (
+                    (1 - self.forward_loss_weight) * inverse_loss +
+                    self.forward_loss_weight * forward_loss
+                   ) * self.lr_scale
+
+            res.update(
+                {
+                    "loss/icm": loss.item(0),
+                    "loss/icm/forward": forward_loss.item(0),
+                    "loss/icm/inverse": inverse_loss.item(0)
+                }
+            )
+            return loss
+
+        grad_fn = ops.value_and_grad(forward_fn, None, self.optim.parameters)
+
+        def train_step(obs, act, obs_next):
+            loss, grads = grad_fn(obs, act, obs_next)
+            self.optim(grads)
+            return loss, grads
+
+        loss, grads = train_step(obs, act, obs_next)
+
         return res

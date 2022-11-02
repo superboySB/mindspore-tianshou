@@ -4,10 +4,11 @@ import os
 import pprint
 
 import numpy as np
-import torch
+import mindspore as ms
+from mindspore import nn
 from atari_network import DQN
 from atari_wrapper import make_atari_env
-from torch.utils.tensorboard import SummaryWriter
+from tensorboardX import SummaryWriter
 
 from mindrl.data import Collector, VectorReplayBuffer
 from mindrl.policy import DQNPolicy
@@ -39,9 +40,8 @@ def get_args():
     parser.add_argument("--test-num", type=int, default=10)
     parser.add_argument("--logdir", type=str, default="log")
     parser.add_argument("--render", type=float, default=0.)
-    parser.add_argument(
-        "--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu"
-    )
+    parser.add_argument('--device', type=str, default='CPU', choices=['Ascend', 'CPU', 'GPU'],
+                        help='Choose a device to run the example(Default: CPU).')
     parser.add_argument("--frames-stack", type=int, default=4)
     parser.add_argument("--resume-path", type=str, default=None)
     parser.add_argument("--resume-id", type=str, default=None)
@@ -81,6 +81,11 @@ def get_args():
 
 
 def test_dqn(args=get_args()):
+    ms.set_context(device_target=args.device)
+    ms.set_context(mode=ms.PYNATIVE_MODE)
+    if ms.get_context('device_target') in ['CPU']:
+        ms.set_context(enable_graph_kernel=True)
+
     env, train_envs, test_envs = make_atari_env(
         args.task,
         args.seed,
@@ -96,10 +101,10 @@ def test_dqn(args=get_args()):
     print("Actions shape:", args.action_shape)
     # seed
     np.random.seed(args.seed)
-    torch.manual_seed(args.seed)
+    ms.set_seed(args.seed)
     # define model
-    net = DQN(*args.state_shape, args.action_shape, args.device).to(args.device)
-    optim = torch.optim.Adam(net.parameters(), lr=args.lr)
+    net = DQN(*args.state_shape, args.action_shape)
+    optim = nn.Adam(net.trainable_params(), learning_rate=args.lr)
     # define policy
     policy = DQNPolicy(
         net,
@@ -110,26 +115,27 @@ def test_dqn(args=get_args()):
     )
     if args.icm_lr_scale > 0:
         feature_net = DQN(
-            *args.state_shape, args.action_shape, args.device, features_only=True
+            *args.state_shape, args.action_shape, features_only=True
         )
-        action_dim = np.prod(args.action_shape)
+        action_dim = int(np.prod(args.action_shape))
         feature_dim = feature_net.output_dim
         icm_net = IntrinsicCuriosityModule(
             feature_net.net,
             feature_dim,
             action_dim,
             hidden_sizes=[512],
-            device=args.device
         )
-        icm_optim = torch.optim.Adam(icm_net.parameters(), lr=args.lr)
+        icm_optim = nn.Adam(icm_net.trainable_params(), learning_rate=args.lr)
         policy = ICMPolicy(
             policy, icm_net, icm_optim, args.icm_lr_scale, args.icm_reward_scale,
             args.icm_forward_loss_weight
         ).to(args.device)
     # load a previous policy
     if args.resume_path:
-        policy.load_state_dict(torch.load(args.resume_path, map_location=args.device))
         print("Loaded agent from: ", args.resume_path)
+        param_not_load = ms.load_param_into_net(policy, ms.load_checkpoint(args.resume_path))
+        print(f"param_not_load:{param_not_load}")
+
     # replay buffer: `save_last_obs` and `stack_num` can be removed together
     # when you have enough RAM
     buffer = VectorReplayBuffer(
@@ -166,7 +172,7 @@ def test_dqn(args=get_args()):
         logger.load(writer)
 
     def save_best_fn(policy):
-        torch.save(policy.state_dict(), os.path.join(log_path, "policy.pth"))
+        ms.save_checkpoint(policy, os.path.join(log_path, "policy.ckpt"))
 
     def stop_fn(mean_rewards):
         if env.spec.reward_threshold:
@@ -180,7 +186,7 @@ def test_dqn(args=get_args()):
         # nature DQN setting, linear decay in the first 1M steps
         if env_step <= 1e6:
             eps = args.eps_train - env_step / 1e6 * \
-                (args.eps_train - args.eps_train_final)
+                  (args.eps_train - args.eps_train_final)
         else:
             eps = args.eps_train_final
         policy.set_eps(eps)
@@ -192,8 +198,8 @@ def test_dqn(args=get_args()):
 
     def save_checkpoint_fn(epoch, env_step, gradient_step):
         # see also: https://pytorch.org/tutorials/beginner/saving_loading_models.html
-        ckpt_path = os.path.join(log_path, f"checkpoint_{epoch}.pth")
-        torch.save({"model": policy.state_dict()}, ckpt_path)
+        ckpt_path = os.path.join(log_path, f"checkpoint_{epoch}.ckpt")
+        ms.save_checkpoint(policy, ckpt_path)
         return ckpt_path
 
     # watch agent's performance

@@ -268,7 +268,7 @@ class BaseTrainer(ABC):
                 raise StopIteration
 
         # set policy in train mode
-        self.policy.train()
+        self.policy.set_train(True)
 
         epoch_stat: Dict[str, Any] = dict()
 

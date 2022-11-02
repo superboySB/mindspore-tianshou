@@ -6,7 +6,7 @@ import gym
 import numpy as np
 
 import mindspore as ms
-import mindspore.nn as nn
+from mindspore import nn
 from mindspore.common.initializer import Zero, Orthogonal
 from tensorboardX import SummaryWriter
 
@@ -131,7 +131,7 @@ def test_pg(args=get_args()):
         pprint.pprint(result)
         # Let's watch its performance!
         env = gym.make(args.task)
-        policy.eval()
+        policy.set_train(False)
         collector = Collector(policy, env)
         result = collector.collect(n_episode=1, render=args.render)
         rews, lens = result["rews"], result["lens"]

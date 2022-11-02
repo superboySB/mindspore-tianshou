@@ -5,7 +5,7 @@ import numpy as np
 import mindspore as ms
 from mindspore import ops, nn
 
-from mindrl.data import Batch, ReplayBuffer, to_mindspore, to_mindspore_as
+from mindrl.data import Batch, ReplayBuffer, to_mindspore
 from mindrl.policy import BasePolicy
 from mindrl.utils import RunningMeanStd
 
@@ -119,47 +119,36 @@ class PGPolicy(BasePolicy):
             elif self.action_type == "continuous":
                 act = logits[0]
         else:
-            act = dist.sample()  # TODO: meet issues of batch inputs for multinominal
+            # TODO: error when "dist.sample()" (issues of batch as inputs for ops.multinominal, only work in GPU)
+            # act = ops.concat([ops.multinomial(prob, 1) for prob in dist.probs])  # for using cpu
+            act = dist.sample()  # for using GPU
         return Batch(logits=logits, act=act, state=hidden, dist=dist)
 
     def learn(  # type: ignore
             self, batch: Batch, batch_size: int, repeat: int, **kwargs: Any
     ) -> Dict[str, List[float]]:
         losses = []
-        state = None
         for _ in range(repeat):
             for minibatch in batch.split(batch_size, merge_last=True):
                 obs = to_mindspore(minibatch.obs)
                 act = to_mindspore(minibatch.act)
                 ret = to_mindspore(minibatch.returns)
 
-                def forward_fn(state, obs, act, ret):
-                    logits, hidden = self.actor(obs, state=state)
-                    if isinstance(logits, tuple):
-                        dist = self.dist_fn(ops.Softmax(axis=-1)(logits)[0])
-                    else:
-                        dist = self.dist_fn(ops.Softmax(axis=-1)(logits))
-
-                    if self._deterministic_eval and not self.training:
-                        if self.action_type == "discrete":
-                            act = ops.argmax(logits, axis=-1)
-                        elif self.action_type == "continuous":
-                            act = logits[0]
-                    else:
-                        act = dist.sample()
-
-                    log_prob = dist.log_prob(act).reshape(len(ret), -1).transpose(0, 1)
+                def forward_fn(obs, act, ret):
+                    logits, hidden = self.actor(obs)
+                    dist = self.dist_fn(ops.Softmax(axis=-1)(logits))
+                    log_prob = dist.log_prob(act).reshape(len(ret), -1).transpose(1, 0)
                     loss = -(log_prob * ret).mean()
                     return loss
 
                 grad_fn = ops.value_and_grad(forward_fn, None, self.optim.parameters)
 
-                def train_step(state, obs, act, ret):
-                    loss, grads = grad_fn(state, obs, act, ret)
+                def train_step(obs, act, ret):
+                    loss, grads = grad_fn(obs, act, ret)
                     self.optim(grads)
                     return loss, grads
 
-                loss, grads = train_step(state, obs, act, ret)
-                losses.append(loss.item((0)))
+                loss, grads = train_step(obs, act, ret)
+                losses.append(loss.item(0))
 
         return {"loss": losses}
