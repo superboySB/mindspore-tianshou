@@ -1,4 +1,4 @@
-# mindrl
+# mindspore-tianshou
 目前MindSpore缺少足够简单的深度强化学习库支持，而官方开源的reinforcement库主要是想做一个rllib这样的工具。启发自tianshou的易用性与较好的性能（基于ray、envpool等好东西），我打算逐步将tianshou从torch迁移到ms上来，从而快速验证ms不同模块与RL的适配效果。
 
 ## :wrench: Dependencies
